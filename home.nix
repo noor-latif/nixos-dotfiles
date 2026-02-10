@@ -3,6 +3,7 @@
 {
   home.username = "noor";
   home.homeDirectory = "/home/noor";
+
   programs.git = {
     enable = true;
     settings = {
@@ -13,12 +14,15 @@
       init.defaultBranch = "main";
     };
   };
+
   programs.gh.enable = true;
-  home.stateVersion = "25.11";
+
   programs.bash = {
     enable = true;
     shellAliases = {
       apply = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#nixos";
     };
   };
+
+  home.stateVersion = "25.11";
 }
