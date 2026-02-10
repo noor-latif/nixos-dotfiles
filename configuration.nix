@@ -78,24 +78,24 @@
     ];
   };
 
-  # Install firefox.
-  programs.firefox.enable = false;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     lolcat
+    foot
+    wmenu
+    grim
+    slurp
+    swaybg
+    firefox
   ];
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
   
-  # To set up Sway/Scroll using Home Manager, you must first enable Polkit in your NixOS configuration.
-  security.polkit.enable = true;
-
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
