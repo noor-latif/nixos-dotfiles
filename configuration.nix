@@ -84,7 +84,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   # Essentials & Terminal
-  firefox foot lolcat sox
+  firefox foot lolcat sox google-chrome
 
   # Wayland / Compositor Utilities
   swaybg swayidle swaynotificationcenter swayosd waybar
