@@ -83,13 +83,27 @@
 
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    lolcat
-    foot
-    wmenu
-    grim
-    slurp
-    swaybg
-    firefox
+  # Essentials & Terminal
+  firefox foot lolcat sox
+
+  # Wayland / Compositor Utilities
+  swaybg swayidle swaynotificationcenter swayosd waybar
+  wlr-randr wlsunset xdg-desktop-portal-wlr
+
+  # Screen Capture & Graphics
+  grim slurp satty
+
+  # Clipboard & Session Management
+  wl-clipboard wl-clip-persist cliphist wlogout swaylock-effects
+
+  # Menu & Launchers
+  rofi  # ← better for Wayland
+
+  # System Controls & Hardware
+  brightnessctl pamixer polkit
+
+  # Specialized
+  sway-audio-idle-inhibit
   ];
 
   fonts.packages = with pkgs; [
