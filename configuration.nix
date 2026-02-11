@@ -107,6 +107,8 @@
   sway-audio-idle-inhibit
   ];
 
+  services.tailscale.enable = true;
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
