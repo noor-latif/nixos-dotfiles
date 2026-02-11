@@ -85,6 +85,7 @@
   environment.systemPackages = with pkgs; [
   # Essentials & Terminal
   firefox foot lolcat sox google-chrome
+  tailscale vscode
 
   # Wayland / Compositor Utilities
   swaybg swayidle swaynotificationcenter swayosd waybar
