@@ -18,12 +18,15 @@
       url = "github:keifufu/dimland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # AI tools updated daily https://github.com/numtide/llm-agents.nix
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, mango, dimland, ... }: {
+  outputs = { self, nixpkgs, home-manager, mango, dimland, llm-agents, ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        { nixpkgs.overlays = [ llm-agents.overlays.default ]; }
         ./configuration.nix
         mango.nixosModules.mango
 	{

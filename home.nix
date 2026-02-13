@@ -5,7 +5,8 @@
   home.homeDirectory = "/home/noor";
   home.packages = with pkgs;[
     nodejs_25
-    amp-cli
+    llm-agents.amp
+    gh
   ];
 
   programs.git = {
@@ -18,8 +19,6 @@
       init.defaultBranch = "main";
     };
   };
-
-  programs.gh.enable = true;
 
   programs.bash = {
     enable = true;
