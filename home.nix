@@ -10,16 +10,17 @@
     gh
   ];
 
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name  = "Noor Latif";
-        email = "noor@latif.se";
-      };
-      init.defaultBranch = "main";
-    };
-  };
+  # Git is configured manually to allow gh CLI to modify config
+  # programs.git = {
+  #   enable = true;
+  #   settings = {
+  #     user = {
+  #       name  = "Noor Latif";
+  #       email = "noor@latif.se";
+  #     };
+  #     init.defaultBranch = "main";
+  #   };
+  # };
 
   programs.bash = {
     enable = true;
