@@ -3,6 +3,10 @@
 {
   home.username = "noor";
   home.homeDirectory = "/home/noor";
+  home.packages = with pkgs;[
+    nodejs_25
+    amp-cli
+  ];
 
   programs.git = {
     enable = true;
@@ -26,3 +30,4 @@
 
   home.stateVersion = "25.11";
 }
+
