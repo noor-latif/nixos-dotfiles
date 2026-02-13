@@ -6,6 +6,7 @@
   home.packages = with pkgs;[
     nodejs_25
     llm-agents.amp
+    llm-agents.opencode
     gh
   ];
 
@@ -26,6 +27,13 @@
       apply = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#nixos";
     };
   };
+
+nix.settings = {
+  extra-substituters = [ "https://cache.numtide.com" ];
+  extra-trusted-public-keys = [
+    "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+  ];
+};
 
   home.stateVersion = "25.11";
 }
