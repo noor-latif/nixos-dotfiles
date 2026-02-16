@@ -13,11 +13,6 @@
       url = "github:DreamMaoMao/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # dimland. dim your screen below minimum
-    dimland = {
-      url = "github:keifufu/dimland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # AI tools updated daily https://github.com/numtide/llm-agents.nix
     llm-agents.url = "github:numtide/llm-agents.nix";
     # Secret management
@@ -27,7 +22,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, mango, dimland, llm-agents, sops-nix, ... }: {
+  outputs = { self, nixpkgs, home-manager, mango, llm-agents, sops-nix, ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -49,10 +44,8 @@
               imports = [ 
                 sops-nix.homeManagerModules.sops
                 ./home.nix 
-                dimland.homeManagerModules.dimland
               ];
               
-              programs.dimland.enable = true; 
             };
           };
         }
