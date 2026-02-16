@@ -107,6 +107,8 @@
   sway-audio-idle-inhibit
   ];
 
+  security.pam.services.swaylock = {};
+
   services.tailscale.enable = true;
 
   fonts.packages = with pkgs; [
