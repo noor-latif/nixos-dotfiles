@@ -11,6 +11,11 @@
     git
   ];
 
+  xdg.configFile."mango" = {
+    source = ./config/mango;
+    recursive = true;
+  };
+
   home.file.".config/git/config" = {
     text = ''
       [user]
@@ -25,6 +30,7 @@
     enable = true;
     shellAliases = {
       apply = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#nixos";
+      waybar-start = "waybar -c ~/.config/mango/waybar/config.jsonc -s ~/.config/mango/waybar/style.css &";
     };
   };
 
