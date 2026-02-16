@@ -116,6 +116,10 @@
   # Trusted users
   nix.settings.trusted-users = [ "@wheel" "noor" ];
   
+  # sops-nix secret management
+  # Tells sops which SSH key to use for decryption
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
