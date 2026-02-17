@@ -1,5 +1,16 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  dotfiles = "${config.home.homeDirectory}/nixos-dotfiles";
+  softlink = path: config.lib.file.mkOutOfStoreSymlink path;
+
+  # Auto-symlink every directory in config/ to ~/.config/
+  configDirs = builtins.readDir ./config;
+  configLinks = builtins.mapAttrs (name: _: {
+    source = softlink "${dotfiles}/config/${name}";
+    recursive = true;
+  }) (lib.filterAttrs (_: type: type == "directory") configDirs);
+in
 {
   home.username = "noor";
   home.homeDirectory = "/home/noor";
@@ -11,14 +22,7 @@
     git
   ];
 
-  xdg.configFile."mango" = {
-    source = ./config/mango;
-    recursive = true;
-  };
-
-  home.file.".config/git/config" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-dotfiles/config/git/config";
-  };
+  xdg.configFile = configLinks;
 
   programs.bash = {
     enable = true;
