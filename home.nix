@@ -20,6 +20,8 @@ in
     llm-agents.opencode
     gh
     git
+    opencommit
+    tmux
   ];
 
   xdg.configFile = configLinks;
