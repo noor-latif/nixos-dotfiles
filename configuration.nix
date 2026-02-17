@@ -82,10 +82,12 @@
   nixpkgs.config.allowUnfree = true;
 
   # $ nix search wget
+  services.gnome.gnome-keyring.enable = true;
+
   environment.systemPackages = with pkgs; [
   # Essentials & Terminal
   firefox foot lolcat sox google-chrome
-  tailscale vscode obsidian
+  tailscale vscode obsidian seahorse
 
   # Wayland / Compositor Utilities
   swaybg swayidle swaynotificationcenter swayosd waybar
