@@ -109,6 +109,13 @@
   sway-audio-idle-inhibit
   ];
 
+  # XDG portal for screen sharing (wlr portal for MangoWC)
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
   security.pam.services.swaylock = {};
 
   services.tailscale.enable = true;
