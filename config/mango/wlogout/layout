@@ -1,6 +1,6 @@
 {
     "label" : "lock",
-    "action" : "swaylock -f -c 000000 &",
+    "action" : "swaylock -f -i ~/.config/mango/wallpaper/wallpaper-mono.jpeg &",
     "text" : "  Lock   ",
     "keybind" : "l"
 }

@@ -17,13 +17,7 @@
   };
 
   home.file.".config/git/config" = {
-    text = ''
-      [user]
-        name = Noor Latif
-        email = noor@latif.se
-      [init]
-        defaultBranch = main
-    '';
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-dotfiles/config/git/config";
   };
 
   programs.bash = {
