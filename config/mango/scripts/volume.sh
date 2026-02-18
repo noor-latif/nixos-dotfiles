@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Changes de volume of the default sink
 # Warning: This script offers no cap for volume, 

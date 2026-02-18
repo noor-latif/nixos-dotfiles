@@ -1,17 +1,11 @@
-@define-color bg    #1a1b26;
-@define-color fg    #a9b1d6;
-@define-color blk   #32344a;
-@define-color red   #f7768e;
-@define-color grn   #9ece6a;
-@define-color ylw   #e0af68;
-@define-color blu   #7aa2f7;
-@define-color mag   #ad8ee6;
-@define-color cyn   #0db9d7;
-@define-color brblk #444b6a;
-@define-color white #ffffff;
+@define-color bg       rgba(8, 0, 0, 0.85);
+@define-color bg-solid #080000;
+@define-color red      #ff0000;
+@define-color dim      #4f0000;
+@define-color white    #e5e5e5;
 
 * {
-    font-family: "Maple Mono NF CN", monospace;
+    font-family: "JetBrainsMono Nerd Font", monospace;
     font-size: 14px;
     font-weight: bold;
     border: none;
@@ -21,42 +15,44 @@
 
 window#waybar {
     background-color: @bg;
-    color: @fg;
+    color: @red;
+    border-bottom: 1px solid @dim;
 }
 
 #workspaces button {
     padding: 0 6px;
-    color: @cyn;
+    color: @red;
     background: transparent;
-    border-bottom: 3px solid @bg;
+    border-bottom: 2px solid transparent;
 }
 
 #workspaces button.active {
-    color: @cyn;
-    border-bottom: 3px solid @mag;
+    color: @white;
+    border-bottom: 2px solid @red;
 }
 
 #workspaces button.hidden {
-    color: @white;
+    color: @dim;
 }
 
 #workspaces button.hidden.active {
-    color: @cyn;
-    border-bottom: 3px solid @mag;
+    color: @white;
+    border-bottom: 2px solid @red;
 }
 
 #workspaces button.urgent {
     background-color: @red;
+    color: @bg-solid;
 }
 
 button:hover {
     background: inherit;
-    box-shadow: inset 0 -3px @white;
+    box-shadow: inset 0 -2px @red;
 }
 
 #custom-sep {
     padding: 0 4px;
-    color: @brblk;
+    color: @dim;
 }
 
 #clock,
@@ -71,16 +67,16 @@ button:hover {
 #custom-power,
 #window {
     padding: 0 8px;
-    color: @white;
+    color: @red;
 }
 
 #window {
-    color: @fg;
+    color: @red;
 }
 
 #clock {
-    color: @cyn;
-    border-bottom: 2px solid @cyn;
+    color: @red;
+    border-bottom: 2px solid @red;
 }
 
 #network {
@@ -90,46 +86,46 @@ button:hover {
 
 #network.disconnected {
     background-color: @red;
-    color: @bg;
+    color: @bg-solid;
 }
 
 #cpu {
-    color: @grn;
-    border-bottom: 2px solid @grn;
-}
-
-#memory {
-    color: @mag;
-    border-bottom: 2px solid @mag;
-}
-
-#temperature {
-    color: @ylw;
-    border-bottom: 2px solid @ylw;
-}
-
-#temperature.critical {
     color: @red;
     border-bottom: 2px solid @red;
 }
 
+#memory {
+    color: @red;
+    border-bottom: 2px solid @red;
+}
+
+#temperature {
+    color: @red;
+    border-bottom: 2px solid @red;
+}
+
+#temperature.critical {
+    color: @white;
+    background-color: @red;
+}
+
 #pulseaudio {
-    color: @blu;
-    border-bottom: 2px solid @blu;
+    color: @red;
+    border-bottom: 2px solid @red;
 }
 
 #pulseaudio.muted {
-    color: @brblk;
-    border-bottom: 2px solid @brblk;
+    color: @dim;
+    border-bottom: 2px solid @dim;
 }
 
 #backlight {
-    color: @ylw;
-    border-bottom: 2px solid @ylw;
+    color: @red;
+    border-bottom: 2px solid @red;
 }
 
 #custom-power {
-    color: @cyn;
+    color: @red;
     padding: 0 10px;
 }
 
@@ -138,11 +134,11 @@ button:hover {
 }
 
 tooltip {
-    background-color: @bg;
-    border: none;
+    background-color: @bg-solid;
+    border: 1px solid @dim;
 }
 
 tooltip label {
-    color: @fg;
+    color: @red;
     padding: 3px 7px;
 }

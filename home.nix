@@ -30,6 +30,9 @@ in
 
   programs.bash = {
     enable = true;
+    initExtra = ''
+      PS1='\[\e[38;5;196m\]\u@\h\[\e[0m\]:\[\e[38;5;196m\]\w\[\e[0m\]\n\[\e[37m\]# \[\e[0m\]'
+    '';
     shellAliases = {
       apply = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#nixos";
       waybar-start = "waybar -c ~/.config/mango/waybar/config.jsonc -s ~/.config/mango/waybar/style.css &";

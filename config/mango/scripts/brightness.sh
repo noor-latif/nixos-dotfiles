@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Change brightness level with `light`.
 # You can call this script like this:
