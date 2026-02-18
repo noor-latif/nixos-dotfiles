@@ -24,9 +24,7 @@ in
     tmux
   ];
 
-  xdg.configFile = configLinks // {
-    "foot/foot.ini".source = softlink "${dotfiles}/config/mango/foot/foot.ini";
-  };
+  xdg.configFile = configLinks;
 
   programs.bash = {
     enable = true;
@@ -35,7 +33,7 @@ in
     '';
     shellAliases = {
       apply = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#nixos";
-      waybar-start = "waybar -c ~/.config/mango/waybar/config.jsonc -s ~/.config/mango/waybar/style.css &";
+      waybar-start = "waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css &";
     };
   };
 
