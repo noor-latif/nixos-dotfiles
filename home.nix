@@ -24,7 +24,9 @@ in
     tmux
   ];
 
-  xdg.configFile = configLinks;
+  xdg.configFile = configLinks // {
+    "foot/foot.ini".source = softlink "${dotfiles}/config/mango/foot/foot.ini";
+  };
 
   programs.bash = {
     enable = true;
