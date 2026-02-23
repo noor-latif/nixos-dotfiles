@@ -29,20 +29,19 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
-  # X11 + GNOME (fallback DE)
+  # X11 + Display Manager (SDDM) + GNOME (fallback DE)
   services.xserver.enable = true;
-  services.displayManager.gdm = {
+  
+  # SDDM display manager - properly respects defaultSession
+  services.displayManager.sddm = {
     enable = true;
-    # Set Mango as the default session
-    settings = {
-      "org/gnome/desktop/interface" = {
-        show-battery-percentage = true;
-      };
-    };
+    wayland.enable = true;  # Use Wayland backend for SDDM
   };
+  
+  # GNOME desktop environment (fallback)
   services.desktopManager.gnome.enable = true;
   
-  # Make Mango the default session (with GNOME as fallback option)
+  # Make Mango the default session
   services.displayManager.defaultSession = "mango";
 
   # Keyboard
