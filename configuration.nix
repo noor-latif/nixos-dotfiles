@@ -1,7 +1,7 @@
 # NixOS System Configuration
 # System-level settings only. User config is in home.nix
 
-{ config, pkgs, userConfig, ... }:
+{ config, pkgs, lib, userConfig, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
