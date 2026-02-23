@@ -45,23 +45,6 @@
   # Make Mango the default session (with GNOME as fallback option)
   services.displayManager.defaultSession = "mango";
 
-  # Fix GDM default session - clear user session preference and set system default
-  # GDM stores per-user session prefs in AccountsService which overrides defaultSession
-  systemd.services.set-mango-default-session = {
-    description = "Set Mango as default session for user";
-    before = [ "display-manager.service" ];
-    wantedBy = [ "display-manager.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = pkgs.writeShellScript "set-mango-session" ''
-        # Remove user's session preference so system default is used
-        if [ -f /var/lib/AccountsService/users/${userConfig.username} ]; then
-          ${pkgs.gnused}/bin/sed -i '/^XSession=/d' /var/lib/AccountsService/users/${userConfig.username}
-        fi
-      '';
-    };
-  };
-
   # Keyboard
   services.xserver.xkb = {
     layout = "se";
