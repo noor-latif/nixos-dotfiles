@@ -36,7 +36,7 @@
     enable = true;
     settings = {
       background = {
-        path = "/home/${userConfig.username}/nixos-dotfiles/wallpaper/wallpaper-mono.jpeg";
+        path = "/home/${userConfig.username}/nixos-dotfiles/wallpaper/wallpaper-mono.png";
         fit = "Cover";
       };
       appearance = {
@@ -52,18 +52,18 @@
     extraCss = ''
       /* Tron: Ares - Dillinger Grid Theme */
       
-      /* Main window - dark red-tinted background */
+      /* Main window - pure black background (wallpaper will show through) */
       window {
-        background-color: #0a0000;
+        background-color: transparent;
         color: #ff0000;
       }
       
-      /* Login container - sharp corners, red border */
+      /* Login container - sharp corners, red border, pure black background */
       .login-window {
-        background-color: rgba(8, 0, 0, 0.95);
+        background-color: #080000;
         border: 2px solid #ff0000;
         border-radius: 0;
-        box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         padding: 40px;
       }
       
@@ -80,24 +80,27 @@
         font-size: 24px;
         font-weight: bold;
         margin-bottom: 20px;
+        font-family: "JetBrains Mono", monospace;
       }
       
       /* Input fields - red border, dark background */
       entry {
-        background-color: #080000;
+        background-color: #0a0000;
         color: #ff0000;
         border: 1px solid #ff0000;
         border-radius: 0;
         padding: 8px 12px;
         font-family: "JetBrains Mono", monospace;
+        margin: 5px 0;
       }
       
       entry:focus {
         border-color: #ff0000;
         box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+        background-color: #0d0000;
       }
       
-      /* Buttons - red outline, dark fill */
+      /* ALL buttons - consistent red outline, dark fill */
       button {
         background-color: #0d0000;
         color: #ff0000;
@@ -106,6 +109,7 @@
         padding: 10px 24px;
         font-family: "JetBrains Mono", monospace;
         font-weight: 500;
+        margin: 5px;
       }
       
       button:hover {
@@ -118,37 +122,93 @@
         color: #000000;
       }
       
+      /* Login button - same style as all buttons */
+      .login-button {
+        background-color: #0d0000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+        border-radius: 0;
+        padding: 10px 24px;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        margin: 5px;
+      }
+      
+      .login-button:hover {
+        background-color: #1a0000;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+      }
+      
+      .login-button:active {
+        background-color: #ff0000;
+        color: #000000;
+      }
+      
+      /* Power buttons - same style, just smaller */
+      .power-button,
+      .power-buttons button {
+        background-color: #0d0000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+        border-radius: 0;
+        padding: 8px 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        font-size: 11px;
+        margin: 5px;
+      }
+      
+      .power-button:hover,
+      .power-buttons button:hover {
+        background-color: #1a0000;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+      }
+      
+      .power-button:active,
+      .power-buttons button:active {
+        background-color: #ff0000;
+        color: #000000;
+      }
+      
       /* Combo boxes (session selector) */
       combobox {
         color: #ff0000;
+        background-color: #0a0000;
+        border: 1px solid #ff0000;
+        border-radius: 0;
       }
       
       combobox button {
-        background-color: #080000;
+        background-color: #0a0000;
+        color: #ff0000;
         border: 1px solid #ff0000;
-      }
-      
-      /* Power buttons - smaller, at bottom */
-      .power-buttons button {
-        padding: 6px 16px;
-        font-size: 11px;
-        opacity: 0.8;
-      }
-      
-      .power-buttons button:hover {
-        opacity: 1;
+        border-radius: 0;
       }
       
       /* Error messages */
       .error-label {
         color: #ff4400;
+        font-family: "JetBrains Mono", monospace;
       }
       
-      /* Clock - subtle */
+      /* Clock - subtle red */
       .clock-label {
         color: #cc0000;
         font-size: 14px;
         opacity: 0.8;
+        font-family: "JetBrains Mono", monospace;
+      }
+      
+      /* Username and password labels */
+      .user-row label,
+      .password-row label {
+        color: #ff0000;
+        font-family: "JetBrains Mono", monospace;
+      }
+      
+      /* Ensure all widgets have transparent background by default */
+      * {
+        background-color: transparent;
       }
     '';
   };
