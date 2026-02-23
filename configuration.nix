@@ -1,32 +1,22 @@
-# Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# NixOS System Configuration
+# System-level settings only. User config is in home.nix
 
-{ config, pkgs, ... }:
+{ config, pkgs, userConfig, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ ./hardware-configuration.nix ];
 
-  # Bootloader.
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-
-  # Enable networking
+  # Basic system
+  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
-
-  # Enable experimental features
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
-  # Set your time zone.
   time.timeZone = "Europe/Stockholm";
 
-  # Select internationalisation properties.
+  # Locale
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "sv_SE.UTF-8";
     LC_IDENTIFICATION = "sv_SE.UTF-8";
@@ -39,26 +29,22 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
-  # Enable the X11 windowing system.
+  # X11 + GNOME (fallback DE)
   services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
+  
+  # Keyboard
   services.xserver.xkb = {
     layout = "se";
     variant = "nodeadkeys";
   };
-
-  # Configure console keymap
   console.keyMap = "sv-latin1";
 
-  # Enable CUPS to print documents.
+  # Printing
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
+  # Audio (PipeWire)
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -68,71 +54,50 @@
     pulse.enable = true;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.noor = {
+  # User account
+  users.users.${userConfig.username} = {
     isNormalUser = true;
-    description = "Noor Latif";
+    description = userConfig.name;
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    packages = [ ];  # Packages are in home.nix
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # $ nix search wget
+  # System services
   services.gnome.gnome-keyring.enable = true;
+  services.tailscale.enable = true;
 
-  environment.systemPackages = with pkgs; [
-  # Essentials & Terminal
-  firefox foot lolcat sox google-chrome
-  tailscale vscode obsidian seahorse
+  # No system packages (all in home.nix)
+  environment.systemPackages = with pkgs; [ ];
 
-  # Wayland / Compositor Utilities
-  swaybg swayidle swaynotificationcenter swayosd waybar
-  wlr-randr wlsunset xdg-desktop-portal-wlr
-
-  # Screen Capture & Graphics
-  grim slurp satty
-
-  # Clipboard & Session Management
-  wl-clipboard wl-clip-persist cliphist wlogout swaylock-effects
-
-  # Menu & Launchers
-  rofi
-
-  # System Controls & Hardware
-  brightnessctl pamixer pavucontrol polkit
-
-  # Specialized
-  sway-audio-idle-inhibit
-  ];
-
-  # XDG portal for screen sharing (wlr portal for MangoWC)
+  # XDG portals (screen sharing)
   xdg.portal = {
     enable = true;
     wlr.enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
+  # Swaylock PAM
   security.pam.services.swaylock = {};
 
-  services.tailscale.enable = true;
+  # Nix settings
+  nixpkgs.config.allowUnfree = true;
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    trusted-users = [ "@wheel" userConfig.username ];
+  };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-  ];
+  # OBS Studio
+  programs.obs-studio = {
+    enable = true;
+    enableVirtualCamera = true;
+    plugins = with pkgs.obs-studio-plugins; [ droidcam-obs ];
+  };
 
-  # Trusted users
-  nix.settings.trusted-users = [ "@wheel" "noor" ];
+  # Polkit (system daemon for authentication)
+  security.polkit.enable = true;
   
-  # sops-nix secret management
-  # Tells sops which SSH key to use for decryption
+  # Secret management
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
-
+  system.stateVersion = "25.11";
 }
