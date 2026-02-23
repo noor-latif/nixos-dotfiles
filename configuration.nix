@@ -88,6 +88,38 @@
         color: #000000;
       }
       
+      /* Login button - suggested-action class */
+      button.suggested-action {
+        background-color: #0d0000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+      }
+      
+      button.suggested-action:hover {
+        background-color: #1a0000;
+      }
+      
+      button.suggested-action:active {
+        background-color: #ff0000;
+        color: #000000;
+      }
+      
+      /* Power buttons - destructive-action class */
+      button.destructive-action {
+        background-color: #0d0000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+      }
+      
+      button.destructive-action:hover {
+        background-color: #1a0000;
+      }
+      
+      button.destructive-action:active {
+        background-color: #ff0000;
+        color: #000000;
+      }
+      
       /* Input fields */
       entry {
         background-color: #0a0000;
