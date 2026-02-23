@@ -10,9 +10,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Kernel parameters - fix rtw88_8822ce WiFi DPK calibration errors
+  boot.kernelParams = [ "pcie_aspm=off" ];
+
   # Basic system
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+
+  # DNS resolution via systemd-resolved
+  services.resolved.enable = true;
   time.timeZone = "Europe/Stockholm";
 
   # Locale
@@ -49,6 +55,11 @@
       };
     };
   };
+
+  # Create tuigreet cache directory for --remember functionality
+  systemd.tmpfiles.rules = [
+    "d '/var/cache/tuigreet' 0755 greeter greeter - -"
+  ];
 
   # GNOME desktop environment (Wayland-native fallback)
   services.desktopManager.gnome.enable = true;
