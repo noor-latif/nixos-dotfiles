@@ -102,15 +102,21 @@ in
     shellAliases = {
       # NixOS rebuild
       apply = "sudo nixos-rebuild switch --flake ~/${userConfig.dotfilesDir}#nixos";
-      
+
       # Home Manager rebuild (works on any distro)
       apply-home = "home-manager switch --flake ~/${userConfig.dotfilesDir}#${userConfig.username}";
-      
+
       # Restart waybar
       waybar-start = "waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css &";
-      
+
       # Reload MangoWC config
       mango-reload = "mango -r";
+
+      # Launch GNOME from TTY (fallback) - requires XDG_SESSION_TYPE for proper Wayland mode
+      gnome = "XDG_SESSION_TYPE=wayland exec dbus-run-session gnome-session";
+
+      # Switch to GDM to choose session
+      gdm = "sudo systemctl restart display-manager";
     };
   };
 

@@ -31,8 +31,19 @@
 
   # X11 + GNOME (fallback DE)
   services.xserver.enable = true;
-  services.displayManager.gdm.enable = true;
+  services.displayManager.gdm = {
+    enable = true;
+    # Set Mango as the default session
+    settings = {
+      "org/gnome/desktop/interface" = {
+        show-battery-percentage = true;
+      };
+    };
+  };
   services.desktopManager.gnome.enable = true;
+  
+  # Make Mango the default session (with GNOME as fallback option)
+  services.displayManager.defaultSession = "mango";
   
   # Keyboard
   services.xserver.xkb = {
