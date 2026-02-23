@@ -66,6 +66,19 @@
         border-radius: 0;
         padding: 40px;
       }
+
+      /* Inner box/container styling */
+      .login-window box {
+        background-color: transparent;
+        border: none;
+        outline: none;
+      }
+
+      .login-window frame {
+        background-color: #080000;
+        border: 1px solid #ff0000;
+        outline: none;
+      }
       
       /* All buttons */
       button {
@@ -89,19 +102,29 @@
       }
       
       /* Login button - suggested-action class */
-      button.suggested-action {
+      button.suggested-action,
+      .suggested-action {
         background-color: #0d0000;
         color: #ff0000;
         border: 1px solid #ff0000;
       }
       
-      button.suggested-action:hover {
+      button.suggested-action:hover,
+      .suggested-action:hover {
         background-color: #1a0000;
       }
       
-      button.suggested-action:active {
+      button.suggested-action:active,
+      .suggested-action:active {
         background-color: #ff0000;
         color: #000000;
+      }
+      
+      /* Remove default GTK button styling */
+      button.text-button.suggested-action {
+        background-color: #0d0000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
       }
       
       /* Power buttons - destructive-action class */
@@ -129,11 +152,19 @@
         padding: 8px 12px;
         font-family: "JetBrains Mono", monospace;
         margin: 5px 0;
+        outline: none;
       }
       
       entry:focus {
         background-color: #0d0000;
         border-color: #ff0000;
+        outline: 2px solid #ff0000;
+        outline-offset: 2px;
+      }
+      
+      entry:focus-visible {
+        outline: 2px solid #ff0000;
+        outline-offset: 2px;
       }
       
       /* Labels */
