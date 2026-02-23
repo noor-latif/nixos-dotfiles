@@ -29,23 +29,33 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
-  # Display Manager (SDDM) + GNOME (fallback DE)
-  # Note: xserver.enable required for display manager framework and keyboard layout
-  services.xserver.enable = true;
-  
-  # SDDM on native Wayland (greeter doesn't use X11, saves ~50-100MB RAM)
-  services.displayManager.sddm = {
+  # Display Manager (greetd + ReGreet) - Pure Wayland, minimal RAM usage
+  # ReGreet runs in cage (Wayland compositor) with no X11 dependency
+  # programs.regreet.enable automatically configures greetd with cage
+  programs.regreet = {
     enable = true;
-    wayland.enable = true;
+    settings = {
+      background = {
+        path = "/home/${userConfig.username}/nixos-dotfiles/wallpaper/wallpaper-mono.jpeg";
+        fit = "Cover";
+      };
+      appearance = {
+        greeting = "Welcome to Tron";
+      };
+    };
   };
-  
+
   # GNOME desktop environment (Wayland-native fallback)
   services.desktopManager.gnome.enable = true;
-  
-  # Make Mango the default session
+
+  # Make Mango the default session (ReGreet respects this)
   services.displayManager.defaultSession = "mango";
 
-  # Keyboard
+  # X11 module required for keyboard layout configuration
+  # Note: X11 server does not run at boot, only loaded for xkb settings
+  services.xserver.enable = true;
+
+  # Keyboard - still needed for console and XWayland apps
   services.xserver.xkb = {
     layout = "se";
     variant = "nodeadkeys";
