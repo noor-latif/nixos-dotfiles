@@ -37,8 +37,6 @@
         command = ''
           ${pkgs.tuigreet}/bin/tuigreet \
             --time \
-            --greeting "SYSTEM READY" \
-            --cmd mango \
             --remember \
             --remember-session \
             --asterisks \
