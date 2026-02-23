@@ -29,16 +29,17 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
-  # X11 + Display Manager (SDDM) + GNOME (fallback DE)
+  # Display Manager (SDDM) + GNOME (fallback DE)
+  # Note: xserver.enable required for display manager framework and keyboard layout
   services.xserver.enable = true;
   
-  # SDDM display manager - properly respects defaultSession
+  # SDDM on native Wayland (greeter doesn't use X11, saves ~50-100MB RAM)
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = true;  # Use Wayland backend for SDDM
+    wayland.enable = true;
   };
   
-  # GNOME desktop environment (fallback)
+  # GNOME desktop environment (Wayland-native fallback)
   services.desktopManager.gnome.enable = true;
   
   # Make Mango the default session
