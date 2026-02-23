@@ -51,164 +51,176 @@
     };
     extraCss = ''
       /* Tron: Ares - Dillinger Grid Theme */
+      /* BEM + DRY Compliant CSS */
       
-      /* Main window - pure black background (wallpaper will show through) */
-      window {
-        background-color: transparent;
-        color: #ff0000;
+      /* ============================================
+         1. CSS CUSTOM PROPERTIES (Design Tokens)
+         ============================================ */
+      :root {
+        /* Colors */
+        --tron-red: #ff0000;
+        --tron-red-dark: #cc0000;
+        --tron-red-bright: #ff4400;
+        --tron-black: #0a0000;
+        --tron-black-light: #0d0000;
+        --tron-black-lighter: #1a0000;
+        --tron-bg-input: #080000;
+        
+        /* Typography */
+        --tron-font: "JetBrains Mono", monospace;
+        --tron-font-weight: 500;
+        
+        /* Spacing */
+        --tron-border-width: 1px;
+        --tron-border-width-thick: 2px;
+        --tron-border-radius: 0;
+        --tron-padding-btn: 10px 24px;
+        --tron-padding-btn-sm: 8px 16px;
+        --tron-padding-input: 8px 12px;
+        
+        /* Effects */
+        --tron-glow: 0 0 10px rgba(255, 0, 0, 0.4);
+        --tron-glow-strong: 0 0 20px rgba(255, 0, 0, 0.5);
       }
       
-      /* Login container - sharp corners, red border, pure black background */
-      .login-window {
-        background-color: #080000;
-        border: 2px solid #ff0000;
-        border-radius: 0;
-        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+      /* ============================================
+         2. BASE STYLES
+         ============================================ */
+      window {
+        background-color: transparent;
+        color: var(--tron-red);
+        font-family: var(--tron-font);
+      }
+      
+      /* Universal transparent background - use with caution */
+      * {
+        background-color: transparent;
+      }
+      
+      /* ============================================
+         3. BLOCK: Login Container (.login)
+         ============================================ */
+      .login {
+        background-color: var(--tron-bg-input);
+        border: var(--tron-border-width-thick) solid var(--tron-red);
+        border-radius: var(--tron-border-radius);
+        box-shadow: var(--tron-glow-strong);
         padding: 40px;
       }
       
-      /* All text - bright red */
-      label {
-        color: #ff0000;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 500;
+      /* ============================================
+         4. BLOCK: Button (.btn)
+         ============================================ */
+      .btn,
+      button {
+        background-color: var(--tron-black-light);
+        color: var(--tron-red);
+        border: var(--tron-border-width) solid var(--tron-red);
+        border-radius: var(--tron-border-radius);
+        padding: var(--tron-padding-btn);
+        font-family: var(--tron-font);
+        font-weight: var(--tron-font-weight);
+        margin: 5px;
       }
       
-      /* Greeting text - larger */
-      .greeting-label {
-        color: #ff0000;
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        font-family: "JetBrains Mono", monospace;
+      .btn:hover,
+      button:hover {
+        background-color: var(--tron-black-lighter);
+        box-shadow: var(--tron-glow);
       }
       
-      /* Input fields - red border, dark background */
+      .btn:active,
+      button:active {
+        background-color: var(--tron-red);
+        color: var(--tron-black);
+      }
+      
+      /* Button Modifier: Small (for power buttons) */
+      .btn--small {
+        padding: var(--tron-padding-btn-sm);
+        font-size: 11px;
+      }
+      
+      /* ============================================
+         5. BLOCK: Input (.input)
+         ============================================ */
+      .input,
       entry {
-        background-color: #0a0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-        padding: 8px 12px;
-        font-family: "JetBrains Mono", monospace;
+        background-color: var(--tron-black);
+        color: var(--tron-red);
+        border: var(--tron-border-width) solid var(--tron-red);
+        border-radius: var(--tron-border-radius);
+        padding: var(--tron-padding-input);
+        font-family: var(--tron-font);
         margin: 5px 0;
       }
       
+      .input:focus,
       entry:focus {
-        border-color: #ff0000;
+        background-color: var(--tron-black-light);
+        border-color: var(--tron-red);
         box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
-        background-color: #0d0000;
       }
       
-      /* ALL buttons - consistent red outline, dark fill */
-      button {
-        background-color: #0d0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-        padding: 10px 24px;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 500;
-        margin: 5px;
+      /* ============================================
+         6. BLOCK: Label (.label)
+         ============================================ */
+      .label,
+      label {
+        color: var(--tron-red);
+        font-family: var(--tron-font);
+        font-weight: var(--tron-font-weight);
       }
       
-      button:hover {
-        background-color: #1a0000;
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+      /* Label Modifier: Greeting (large title) */
+      .label--greeting {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
       }
       
-      button:active {
-        background-color: #ff0000;
-        color: #000000;
+      /* Label Modifier: Error (orange-red) */
+      .label--error {
+        color: var(--tron-red-bright);
       }
       
-      /* Login button - same style as all buttons */
-      .login-button {
-        background-color: #0d0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-        padding: 10px 24px;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 500;
-        margin: 5px;
-      }
-      
-      .login-button:hover {
-        background-color: #1a0000;
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
-      }
-      
-      .login-button:active {
-        background-color: #ff0000;
-        color: #000000;
-      }
-      
-      /* Power buttons - same style, just smaller */
-      .power-button,
-      .power-buttons button {
-        background-color: #0d0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-        padding: 8px 16px;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 500;
-        font-size: 11px;
-        margin: 5px;
-      }
-      
-      .power-button:hover,
-      .power-buttons button:hover {
-        background-color: #1a0000;
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
-      }
-      
-      .power-button:active,
-      .power-buttons button:active {
-        background-color: #ff0000;
-        color: #000000;
-      }
-      
-      /* Combo boxes (session selector) */
-      combobox {
-        color: #ff0000;
-        background-color: #0a0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-      }
-      
-      combobox button {
-        background-color: #0a0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-      }
-      
-      /* Error messages */
-      .error-label {
-        color: #ff4400;
-        font-family: "JetBrains Mono", monospace;
-      }
-      
-      /* Clock - subtle red */
-      .clock-label {
-        color: #cc0000;
+      /* Label Modifier: Clock (subtle) */
+      .label--clock {
+        color: var(--tron-red-dark);
         font-size: 14px;
         opacity: 0.8;
-        font-family: "JetBrains Mono", monospace;
       }
       
-      /* Username and password labels */
-      .user-row label,
-      .password-row label {
-        color: #ff0000;
-        font-family: "JetBrains Mono", monospace;
+      /* ============================================
+         7. BLOCK: Dropdown (.dropdown)
+         ============================================ */
+      .dropdown,
+      combobox {
+        color: var(--tron-red);
+        background-color: var(--tron-black);
+        border: var(--tron-border-width) solid var(--tron-red);
+        border-radius: var(--tron-border-radius);
       }
       
-      /* Ensure all widgets have transparent background by default */
-      * {
-        background-color: transparent;
+      .dropdown button,
+      combobox button {
+        background-color: var(--tron-black);
+        color: var(--tron-red);
+        border: var(--tron-border-width) solid var(--tron-red);
+        border-radius: var(--tron-border-radius);
+      }
+      
+      /* ============================================
+         8. UTILITY CLASSES
+         ============================================ */
+      /* Row containers for form fields */
+      .form-row {
+        margin: 5px 0;
+      }
+      
+      .form-row label {
+        color: var(--tron-red);
+        font-family: var(--tron-font);
       }
     '';
   };
