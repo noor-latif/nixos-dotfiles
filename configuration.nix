@@ -92,15 +92,15 @@
         font-family: var(--tron-font);
       }
       
-      /* Universal transparent background - use with caution */
-      * {
+      /* Specific transparent backgrounds for ReGreet widgets */
+      window, .login-window, entry, button {
         background-color: transparent;
       }
       
       /* ============================================
-         3. BLOCK: Login Container (.login)
+         3. BLOCK: Login Container (.login-window)
          ============================================ */
-      .login {
+      .login-window {
         background-color: var(--tron-bg-input);
         border: var(--tron-border-width-thick) solid var(--tron-red);
         border-radius: var(--tron-border-radius);
