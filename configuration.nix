@@ -100,7 +100,7 @@
   wl-clipboard wl-clip-persist cliphist wlogout swaylock-effects
 
   # Menu & Launchers
-  rofi  # ← better for Wayland
+  rofi
 
   # System Controls & Hardware
   brightnessctl pamixer pavucontrol polkit
