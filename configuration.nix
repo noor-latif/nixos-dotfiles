@@ -29,195 +29,34 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
-  # Display Manager (greetd + ReGreet) - Pure Wayland, minimal RAM usage
-  # ReGreet runs in cage (Wayland compositor) with no X11 dependency
-  # programs.regreet.enable automatically configures greetd with cage
-  programs.regreet = {
+  # Display Manager (greetd + tuigreet) - TUI-based, minimal RAM
+  services.greetd = {
     enable = true;
     settings = {
-      background = {
-        path = "/home/${userConfig.username}/nixos-dotfiles/wallpaper/wallpaper-mono.png";
-        fit = "Cover";
-      };
-      appearance = {
-        greeting = "SYSTEM READY";
-      };
-      GTK = {
-        application_prefer_dark_theme = true;
-        theme_name = "Adwaita";
-        font_name = lib.mkForce "JetBrains Mono 11";
-        cursor_theme_name = "Adwaita";
+      default_session = {
+        command = ''
+          ${pkgs.greetd.tuigreet}/bin/tuigreet \
+            --time \
+            --greeting "SYSTEM READY" \
+            --cmd mango \
+            --remember \
+            --remember-session \
+            --asterisks \
+            --window-padding 2 \
+            --container-padding 2 \
+            --prompt-padding 1 \
+            --theme 'border=red;container=black;text=red;greet=red;prompt=red;input=red;action=red;button=red'
+        '';
+        user = "greeter";
       };
     };
-    extraCss = ''
-      /* Tron: Ares Theme - Simplified GTK4 CSS */
-      
-      /* Window background transparent to show wallpaper */
-      window {
-        background-color: transparent;
-        color: #ff0000;
-        font-family: "JetBrains Mono", monospace;
-      }
-      
-      /* Login container */
-      .login-window {
-        background-color: #080000;
-        border: 2px solid #ff0000;
-        border-radius: 0;
-        padding: 40px;
-      }
-
-      /* Inner box/container styling */
-      .login-window box {
-        background-color: transparent;
-        border: none;
-        outline: none;
-      }
-
-      .login-window frame {
-        background-color: #080000;
-        border: 1px solid #ff0000;
-        outline: none;
-      }
-      
-      /* All buttons */
-      button {
-        background-color: #0d0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-        padding: 10px 24px;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 500;
-        margin: 5px;
-      }
-      
-      button:hover {
-        background-color: #1a0000;
-      }
-      
-      button:active {
-        background-color: #ff0000;
-        color: #000000;
-      }
-      
-      /* Login button - suggested-action class */
-      button.suggested-action,
-      .suggested-action {
-        background-color: #0d0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-      }
-      
-      button.suggested-action:hover,
-      .suggested-action:hover {
-        background-color: #1a0000;
-      }
-      
-      button.suggested-action:active,
-      .suggested-action:active {
-        background-color: #ff0000;
-        color: #000000;
-      }
-      
-      /* Remove default GTK button styling */
-      button.text-button.suggested-action {
-        background-color: #0d0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-      }
-      
-      /* Power buttons - destructive-action class */
-      button.destructive-action {
-        background-color: #0d0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-      }
-      
-      button.destructive-action:hover {
-        background-color: #1a0000;
-      }
-      
-      button.destructive-action:active {
-        background-color: #ff0000;
-        color: #000000;
-      }
-      
-      /* Input fields */
-      entry {
-        background-color: #0a0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-        padding: 8px 12px;
-        font-family: "JetBrains Mono", monospace;
-        margin: 5px 0;
-        outline: none;
-      }
-      
-      entry:focus {
-        background-color: #0d0000;
-        border-color: #ff0000;
-        outline: 2px solid #ff0000;
-        outline-offset: 2px;
-      }
-      
-      entry:focus-visible {
-        outline: 2px solid #ff0000;
-        outline-offset: 2px;
-      }
-      
-      /* Labels */
-      label {
-        color: #ff0000;
-        font-family: "JetBrains Mono", monospace;
-        font-weight: 500;
-      }
-      
-      /* Greeting label */
-      .greeting-label {
-        color: #ff0000;
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        font-family: "JetBrains Mono", monospace;
-      }
-      
-      /* Error label */
-      .error-label {
-        color: #ff4400;
-        font-family: "JetBrains Mono", monospace;
-      }
-      
-      /* Clock label */
-      .clock-label {
-        color: #cc0000;
-        font-size: 14px;
-        opacity: 0.8;
-        font-family: "JetBrains Mono", monospace;
-      }
-      
-      /* Combo boxes */
-      combobox {
-        color: #ff0000;
-        background-color: #0a0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-      }
-      
-      combobox button {
-        background-color: #0a0000;
-        color: #ff0000;
-        border: 1px solid #ff0000;
-        border-radius: 0;
-      }
-    '';
   };
 
   # GNOME desktop environment (Wayland-native fallback)
   services.desktopManager.gnome.enable = true;
 
-  # Make Mango the default session (ReGreet respects this)
+  # Make Mango the default session for display managers that support it
+  # Note: tuigreet uses --cmd option instead
   services.displayManager.defaultSession = "mango";
 
   # X11 module required for keyboard layout configuration
