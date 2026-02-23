@@ -40,9 +40,117 @@
         fit = "Cover";
       };
       appearance = {
-        greeting = "Welcome to Tron";
+        greeting = "SYSTEM READY";
+      };
+      GTK = {
+        application_prefer_dark_theme = true;
+        theme_name = "Adwaita";
+        font_name = "JetBrains Mono 11";
+        cursor_theme_name = "Adwaita";
       };
     };
+    extraCss = ''
+      /* Tron: Ares - Dillinger Grid Theme */
+      
+      /* Main window - dark red-tinted background */
+      window {
+        background-color: #0a0000;
+        color: #ff0000;
+      }
+      
+      /* Login container - sharp corners, red border */
+      .login-window {
+        background-color: rgba(8, 0, 0, 0.95);
+        border: 2px solid #ff0000;
+        border-radius: 0;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        padding: 40px;
+      }
+      
+      /* All text - bright red */
+      label {
+        color: #ff0000;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+      }
+      
+      /* Greeting text - larger */
+      .greeting-label {
+        color: #ff0000;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      
+      /* Input fields - red border, dark background */
+      entry {
+        background-color: #080000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+        border-radius: 0;
+        padding: 8px 12px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      
+      entry:focus {
+        border-color: #ff0000;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+      }
+      
+      /* Buttons - red outline, dark fill */
+      button {
+        background-color: #0d0000;
+        color: #ff0000;
+        border: 1px solid #ff0000;
+        border-radius: 0;
+        padding: 10px 24px;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+      }
+      
+      button:hover {
+        background-color: #1a0000;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+      }
+      
+      button:active {
+        background-color: #ff0000;
+        color: #000000;
+      }
+      
+      /* Combo boxes (session selector) */
+      combobox {
+        color: #ff0000;
+      }
+      
+      combobox button {
+        background-color: #080000;
+        border: 1px solid #ff0000;
+      }
+      
+      /* Power buttons - smaller, at bottom */
+      .power-buttons button {
+        padding: 6px 16px;
+        font-size: 11px;
+        opacity: 0.8;
+      }
+      
+      .power-buttons button:hover {
+        opacity: 1;
+      }
+      
+      /* Error messages */
+      .error-label {
+        color: #ff4400;
+      }
+      
+      /* Clock - subtle */
+      .clock-label {
+        color: #cc0000;
+        font-size: 14px;
+        opacity: 0.8;
+      }
+    '';
   };
 
   # GNOME desktop environment (Wayland-native fallback)
