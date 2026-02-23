@@ -87,11 +87,13 @@
     "format-plugged": "󰚥 {capacity}%"
   },
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
-    "format-muted": "  Muted",
+    "format": "{icon} {volume}%",
+    "format-muted": " Muted",
     "on-click": "pamixer -t",
+    "on-click-right": "pavucontrol",
     "on-scroll-up": "pamixer -i 2",
     "on-scroll-down": "pamixer -d 2",
+    "tooltip-format": "{desc}",
     "format-icons": {
       "headphone": "",
       "default": ["", "", ""]

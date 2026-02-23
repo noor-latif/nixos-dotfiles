@@ -103,7 +103,7 @@
   rofi  # ← better for Wayland
 
   # System Controls & Hardware
-  brightnessctl pamixer polkit
+  brightnessctl pamixer pavucontrol polkit
 
   # Specialized
   sway-audio-idle-inhibit

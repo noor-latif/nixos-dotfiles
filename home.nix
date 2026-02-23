@@ -23,6 +23,7 @@ in
     opencommit
     tmux
     networkmanager
+    bluetuith
   ];
 
   xdg.configFile = configLinks;
