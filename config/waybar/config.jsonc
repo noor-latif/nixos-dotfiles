@@ -20,6 +20,7 @@
     "memory",
     "custom/sep",
     "temperature",
+    "battery",
     "custom/sep",
     "pulseaudio",
     "custom/sep",
@@ -73,6 +74,17 @@
     "format": "{icon} {temperatureC}°C",
     "tooltip-format": "{temperatureF}°F",
     "format-icons": ["", "", ""]
+  },
+  "battery": {
+    "interval": 10,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%"
   },
   "pulseaudio": {
     "format": "{icon}  {volume}%",

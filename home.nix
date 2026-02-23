@@ -22,6 +22,7 @@ in
     git
     opencommit
     tmux
+    networkmanager
   ];
 
   xdg.configFile = configLinks;

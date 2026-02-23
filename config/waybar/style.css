@@ -104,6 +104,11 @@ button:hover {
     border-bottom: 2px solid @red;
 }
 
+#battery {
+    color: @red;
+    border-bottom: 2px solid @red;
+}
+
 #temperature.critical {
     color: @white;
     background-color: @red;
