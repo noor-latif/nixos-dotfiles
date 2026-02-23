@@ -45,7 +45,7 @@
       GTK = {
         application_prefer_dark_theme = true;
         theme_name = "Adwaita";
-        font_name = "JetBrains Mono 11";
+        font_name = lib.mkForce "JetBrains Mono 11";
         cursor_theme_name = "Adwaita";
       };
     };
