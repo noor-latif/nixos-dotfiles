@@ -55,8 +55,6 @@
   # GNOME desktop environment (Wayland-native fallback)
   services.desktopManager.gnome.enable = true;
 
-
-
   # X11 module required for keyboard layout configuration
   # Note: X11 server does not run at boot, only loaded for xkb settings
   services.xserver.enable = true;
