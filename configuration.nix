@@ -1,7 +1,7 @@
 # NixOS System Configuration
 # System-level settings only. User config is in home.nix
 
-{ config, pkgs, lib, userConfig, ... }:
+{ config, pkgs, userConfig, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -55,9 +55,7 @@
   # GNOME desktop environment (Wayland-native fallback)
   services.desktopManager.gnome.enable = true;
 
-  # Make Mango the default session for display managers that support it
-  # Note: tuigreet uses --cmd option instead
-  services.displayManager.defaultSession = "mango";
+
 
   # X11 module required for keyboard layout configuration
   # Note: X11 server does not run at boot, only loaded for xkb settings
