@@ -155,25 +155,9 @@ in
   programs.noctalia-shell = {
     enable = true;
 
-    # Tron: Ares Color Scheme (red-on-black)
-    colors = {
-      mPrimary = "#ff0000";           # Pure red
-      mOnPrimary = "#0d0000";         # Near-black on red
-      mSecondary = "#ff0000";         # Red
-      mOnSecondary = "#0d0000";
-      mTertiary = "#ff3333";          # Slightly lighter red
-      mOnTertiary = "#0d0000";
-      mError = "#ff0000";
-      mOnError = "#ffffff";
-      mSurface = "#0d0000";           # Background
-      mOnSurface = "#ff0000";         # Text
-      mSurfaceVariant = "#1a0000";
-      mOnSurfaceVariant = "#ff4f4f";
-      mOutline = "#4f0000";           # Borders
-      mShadow = "#000000";
-      mHover = "#1f0000";
-      mOnHover = "#ff0000";
-    };
+    # Colors are managed via colorscheme files in ~/.config/noctalia/colorschemes/
+    # Tron: Ares colorscheme is deployed via config/noctalia/ directory symlink
+    # This allows switching themes in the Noctalia Settings GUI
 
     # Initial settings (can be modified via GUI later)
     settings = {
