@@ -26,23 +26,23 @@
     "script-fail-notify": true,
 	"scripts": {
 		"message-sound": {
-			"exec": "~/.config/mango/swaync/sound/sound-message.sh",
+			"exec": "~/.config/swaync/sound/sound-message.sh",
 			"app-name":"QQ|Google-chrome"
 		},
 		"complete-sound": {
-			"exec": "~/.config/mango/swaync/sound/sound-complete.sh",
+			"exec": "~/.config/swaync/sound/sound-complete.sh",
 			"app-name":"alixby3|com.xunlei.download|baidunetdisk"
 		},
 		"Low-sound": {
-			"exec": "~/.config/mango/swaync/sound/sound-normal.sh",
+			"exec": "~/.config/swaync/sound/sound-normal.sh",
 			"urgency": "Low"
 		  },
 		"Normal-sound": {
-		  "exec": "~/.config/mango/swaync/sound/sound-normal.sh",
+		  "exec": "~/.config/swaync/sound/sound-normal.sh",
 		  "urgency": "Normal"
 		},
 		"Critical-sound": {
-			"exec": "~/.config/mango/swaync/sound/sound-critical.sh",
+			"exec": "~/.config/swaync/sound/sound-critical.sh",
 			"urgency": "Critical"
 		  }
 	},

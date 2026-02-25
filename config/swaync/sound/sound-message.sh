@@ -6,4 +6,4 @@ if [[ "$state" == "true" ]];then
     exit 0
 fi
 
-play -v 0.3 ~/.config/mango/swaync/sound/message.ogg
+play -v 0.3 ~/.config/swaync/sound/message.ogg
