@@ -11,12 +11,11 @@ let
   softlink = path: config.lib.file.mkOutOfStoreSymlink path;
 
   # Auto-detect all directories in config/ and symlink to ~/.config/
-  # Excludes: noctalia (managed by programs.noctalia-shell)
   configDirs = builtins.readDir ./config;
   configLinks = builtins.mapAttrs (name: _: {
     source = softlink "${dotfilesPath}/config/${name}";
     recursive = true;
-  }) (lib.filterAttrs (n: type: type == "directory" && n != "noctalia") configDirs);
+  }) (lib.filterAttrs (_: type: type == "directory") configDirs);
 in
 {
   # Essential Home Manager settings
@@ -87,11 +86,7 @@ in
   ];
 
   # Symlink config/* directories to ~/.config/
-  # Note: noctalia is excluded (managed by programs.noctalia-shell)
-  xdg.configFile = configLinks // {
-    # Deploy Tron Ares colorscheme
-    "noctalia/colorschemes/tron-ares/tron-ares.json".source = ./config/noctalia/colorschemes/tron-ares/tron-ares.json;
-  };
+  xdg.configFile = configLinks;
 
   # Shell configuration
   programs.bash = {
@@ -157,98 +152,8 @@ in
   };
 
   # Noctalia Shell - replaces waybar, swaync, swayosd, wlogout, rofi, swaylock-effects, swaybg
+  # Config is managed via auto-symlink from config/noctalia/
   programs.noctalia-shell = {
     enable = true;
-
-    # Colors are managed via colorscheme files in ~/.config/noctalia/colorschemes/
-    # Tron: Ares colorscheme is deployed via config/noctalia/ directory symlink
-    # This allows switching themes in the Noctalia Settings GUI
-
-    # Initial settings (can be modified via GUI later)
-    settings = {
-      settingsVersion = 0;
-
-      bar = {
-        barType = "simple";
-        position = "top";
-        density = "compact";           # Match minimal aesthetic
-        showOutline = false;
-        showCapsule = true;
-        capsuleOpacity = 1;
-        backgroundOpacity = 0.93;
-        floating = false;
-        marginVertical = 4;
-        marginHorizontal = 4;
-        frameThickness = 0;             # No frame for sharp corners
-        frameRadius = 0;                # Sharp corners (Tron aesthetic)
-        outerCorners = true;
-        hideOnOverview = false;
-        displayMode = "always_visible";
-
-        # Match current waybar layout
-        widgets = {
-          left = [
-            { id = "Launcher"; }
-            { id = "Clock"; }
-            { id = "SystemMonitor"; }
-            { id = "ActiveWindow"; }
-          ];
-          center = [
-            { id = "Workspace"; }
-          ];
-          right = [
-            { id = "Tray"; }
-            { id = "Battery"; }
-            { id = "Volume"; }
-            { id = "Brightness"; }
-            { id = "ControlCenter"; }
-          ];
-        };
-      };
-
-      general = {
-        radiusRatio = 0;                # Sharp corners
-        enableShadows = true;
-        shadowDirection = "bottom_right";
-        shadowOffsetX = 2;
-        shadowOffsetY = 3;
-        lockOnSuspend = true;
-        showSessionButtonsOnLockScreen = true;
-      };
-
-      wallpaper = {
-        enabled = true;
-        directory = "~/.config/mango/wallpaper";
-        fillMode = "crop";              # Equivalent to swaybg -m fill
-        transitionDuration = 1500;
-        transitionType = "fade";
-      };
-
-      notifications = {
-        enabled = true;
-        location = "top_right";
-        overlayLayer = true;
-        backgroundOpacity = 1;
-        respectExpireTimeout = false;
-        lowUrgencyDuration = 3;
-        normalUrgencyDuration = 8;
-        criticalUrgencyDuration = 15;
-      };
-
-      osd = {
-        enabled = true;
-        location = "top_right";
-        autoHideMs = 2000;
-        overlayLayer = true;
-        backgroundOpacity = 1;
-      };
-
-      nightLight = {
-        enabled = false;                # Disabled by default
-        autoSchedule = true;
-        nightTemp = "4000";
-        dayTemp = "6500";
-      };
-    };
   };
 }

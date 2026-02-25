@@ -1,0 +1,97 @@
+{
+  "bar": {
+    "backgroundOpacity": 0.93,
+    "barType": "simple",
+    "capsuleOpacity": 1,
+    "density": "compact",
+    "displayMode": "always_visible",
+    "floating": false,
+    "frameRadius": 0,
+    "frameThickness": 0,
+    "hideOnOverview": false,
+    "marginHorizontal": 4,
+    "marginVertical": 4,
+    "outerCorners": true,
+    "position": "top",
+    "showCapsule": true,
+    "showOutline": false,
+    "widgets": {
+      "center": [
+        {
+          "id": "Workspace"
+        }
+      ],
+      "left": [
+        {
+          "id": "Launcher"
+        },
+        {
+          "id": "Clock"
+        },
+        {
+          "id": "SystemMonitor"
+        },
+        {
+          "id": "ActiveWindow"
+        }
+      ],
+      "right": [
+        {
+          "id": "Tray"
+        },
+        {
+          "id": "Battery"
+        },
+        {
+          "id": "Volume"
+        },
+        {
+          "id": "Brightness"
+        },
+        {
+          "id": "ControlCenter"
+        }
+      ]
+    }
+  },
+  "general": {
+    "enableShadows": true,
+    "lockOnSuspend": true,
+    "radiusRatio": 0,
+    "shadowDirection": "bottom_right",
+    "shadowOffsetX": 2,
+    "shadowOffsetY": 3,
+    "showSessionButtonsOnLockScreen": true
+  },
+  "nightLight": {
+    "autoSchedule": true,
+    "dayTemp": "6500",
+    "enabled": false,
+    "nightTemp": "4000"
+  },
+  "notifications": {
+    "backgroundOpacity": 1,
+    "criticalUrgencyDuration": 15,
+    "enabled": true,
+    "location": "top_right",
+    "lowUrgencyDuration": 3,
+    "normalUrgencyDuration": 8,
+    "overlayLayer": true,
+    "respectExpireTimeout": false
+  },
+  "osd": {
+    "autoHideMs": 2000,
+    "backgroundOpacity": 1,
+    "enabled": true,
+    "location": "top_right",
+    "overlayLayer": true
+  },
+  "settingsVersion": 0,
+  "wallpaper": {
+    "directory": "~/.config/mango/wallpaper",
+    "enabled": true,
+    "fillMode": "crop",
+    "transitionDuration": 1500,
+    "transitionType": "fade"
+  }
+}
