@@ -11,11 +11,12 @@ let
   softlink = path: config.lib.file.mkOutOfStoreSymlink path;
 
   # Auto-detect all directories in config/ and symlink to ~/.config/
+  # Excludes: noctalia (managed by programs.noctalia-shell)
   configDirs = builtins.readDir ./config;
   configLinks = builtins.mapAttrs (name: _: {
     source = softlink "${dotfilesPath}/config/${name}";
     recursive = true;
-  }) (lib.filterAttrs (_: type: type == "directory") configDirs);
+  }) (lib.filterAttrs (n: type: type == "directory" && n != "noctalia") configDirs);
 in
 {
   # Essential Home Manager settings
@@ -86,7 +87,11 @@ in
   ];
 
   # Symlink config/* directories to ~/.config/
-  xdg.configFile = configLinks;
+  # Note: noctalia is excluded (managed by programs.noctalia-shell)
+  xdg.configFile = configLinks // {
+    # Deploy Tron Ares colorscheme
+    "noctalia/colorschemes/tron-ares/tron-ares.json".source = ./config/noctalia/colorschemes/tron-ares/tron-ares.json;
+  };
 
   # Shell configuration
   programs.bash = {
