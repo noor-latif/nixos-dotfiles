@@ -5,5 +5,5 @@ startd=$(pgrep waybar)
 if [ -n "$startd" ]; then
 	pkill waybar
 else
-	waybar -c ~/.config/mango/waybar/config.jsonc -s ~/.config/mango/waybar/style.css
+	waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css
 fi

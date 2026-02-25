@@ -175,11 +175,11 @@
     "custom/power": {
         "format": "",
         "tooltip": false,
-        "on-click": "wlogout -C ~/.config/mango/wlogout/style.css -l  ~/.config/mango/wlogout/layout  -b 6 --protocol layer-shell",
+        "on-click": "wlogout -C ~/.config/wlogout/style.css -l ~/.config/wlogout/layout -b 6 --protocol layer-shell",
   		  "menu": "on-click-right",
-  		  "menu-file": "~/.config/mango/waybar/battery_menu.xml",
+  		  "menu-file": "~/.config/waybar/battery_menu.xml",
 		    "menu-actions": {
-			   "performance": "bash ~/.config/mango/scripts/power-profile  --performance",
+			   "performance": "bash ~/.config/mango/scripts/power-profile --performance",
 			   "schedutil": "bash ~/.config/mango/scripts/power-profile --schedutil"
         }
     },
