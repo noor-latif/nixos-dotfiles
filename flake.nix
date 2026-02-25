@@ -16,9 +16,13 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia-shell = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, mango, llm-agents, sops-nix, ... }:
+  outputs = { self, nixpkgs, home-manager, mango, llm-agents, sops-nix, noctalia-shell, ... }:
     let
       system = "x86_64-linux";
       
@@ -44,6 +48,7 @@
       commonHomeImports = [
         sops-nix.homeManagerModules.sops
         mango.hmModules.mango
+        noctalia-shell.homeModules.default
         ./home.nix
       ];
     in

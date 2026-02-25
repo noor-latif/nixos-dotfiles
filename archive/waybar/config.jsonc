@@ -1,0 +1,117 @@
+{
+  "layer": "top",
+  "height": 32,
+  "spacing": 0,
+
+  "modules-left": [
+    "ext/workspaces",
+    "custom/sep",
+    "dwl/window#layout",
+    "custom/sep",
+    "dwl/window#title"
+  ],
+  "modules-right": [
+    "tray",
+    "custom/sep",
+    "network",
+    "custom/sep",
+    "cpu",
+    "custom/sep",
+    "memory",
+    "custom/sep",
+    "temperature",
+    "battery",
+    "custom/sep",
+    "pulseaudio",
+    "custom/sep",
+    "backlight",
+    "custom/sep",
+    "clock",
+    "custom/sep",
+    "custom/power"
+  ],
+
+  "ext/workspaces": {
+    "format": "{icon}",
+    "ignore-hidden": true,
+    "on-click": "activate",
+    "on-click-right": "deactivate",
+    "on-scroll-up": "mmsg -d viewtoleft_have_client",
+    "on-scroll-down": "mmsg -d viewtoright_have_client",
+    "sort-by-id": true
+  },
+  "dwl/window#layout": {
+    "format": "[{layout}]"
+  },
+  "dwl/window#title": {
+    "format": "{title}"
+  },
+  "custom/sep": {
+    "format": "|",
+    "interval": 0
+  },
+  "tray": {
+    "icon-size": 18,
+    "spacing": 8
+  },
+  "network": {
+    "interval": 2,
+    "format-wifi": "\uf1eb  {essid} ({signalStrength}%)",
+    "format-ethernet": "󰈀 {ifname}",
+    "format-disconnected": "󰖪 Disconnected",
+    "tooltip-format": "{ifname} {ipaddr}/{cidr} via {gwaddr}",
+    "format-alt": "↓{bandwidthDownBytes} ↑{bandwidthUpBytes}"
+  },
+  "cpu": {
+    "interval": 2,
+    "format": " {usage}%"
+  },
+  "memory": {
+    "format": " {used}GiB"
+  },
+  "temperature": {
+    "critical-threshold": 90,
+    "format": "{icon} {temperatureC}°C",
+    "tooltip-format": "{temperatureF}°F",
+    "format-icons": ["", "", ""]
+  },
+  "battery": {
+    "interval": 10,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": " Muted",
+    "on-click": "pamixer -t",
+    "on-click-right": "pavucontrol",
+    "on-scroll-up": "pamixer -i 2",
+    "on-scroll-down": "pamixer -d 2",
+    "tooltip-format": "{desc}",
+    "format-icons": {
+      "headphone": "",
+      "default": ["", "", ""]
+    }
+  },
+  "backlight": {
+    "format": "{icon} {percent}%",
+    "format-icons": ["󰖔", "󰖨"]
+  },
+  "clock": {
+    "format": " {:%H:%M}",
+    "format-alt": " {:L%A, %b %d}",
+    "tooltip-format": "{:%Y}"
+  },
+  "custom/power": {
+    "format": "󰣇",
+    "tooltip": false,
+    "on-click": "wlogout -C ~/.config/wlogout/style.css -l ~/.config/wlogout/layout -b 6 --protocol layer-shell",
+    "on-click-right": "sleep 0.1s && swaync-client -t -sw"
+  }
+}
