@@ -40,6 +40,9 @@ in
     zed-editor
     obsidian
     
+    # Secrets management
+    sops
+    
     # Terminal
     foot
     lolcat
