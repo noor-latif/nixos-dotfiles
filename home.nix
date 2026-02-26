@@ -25,6 +25,7 @@ in
   home.packages = with pkgs; [
     # Development
     nodejs_25
+    go
     llm-agents.amp
     llm-agents.opencode
     gh
@@ -32,6 +33,7 @@ in
     opencommit
     tmux
     bluetuith
+    exercism
     
     # Desktop
     google-chrome
