@@ -122,12 +122,12 @@ in
 
   services.lxqt-policykit-agent.enable = true;
 
-  # Simple whole-file SOPS secrets mode - decrypt entire secrets.yaml
+  # Simple whole-file SOPS secrets mode - decrypt entire secrets file
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets/secrets.env;
     secrets.my-secrets = {
-      key = "";  # Whole file mode - decrypt entire YAML
+      sopsFile = ./secrets/secrets.env;
+      format = "dotenv";  # Dotenv format
     };
   };
 
