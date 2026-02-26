@@ -43,7 +43,7 @@ in
     sops
     
     # Flox package manager
-    flox.packages.${pkgs.system}.default
+    flox.packages.${pkgs.stdenv.hostPlatform.system}.default
     
     # Terminal
     foot
