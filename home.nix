@@ -1,7 +1,7 @@
 # Home Manager configuration - portable across NixOS and any Linux distro
 # This file uses userConfig passed via extraSpecialArgs from flake.nix
 
-{ config, pkgs, lib, userConfig, osConfig ? null, ... }:
+{ config, pkgs, lib, userConfig, flox, osConfig ? null, ... }:
 
 let
   dotfilesPath = "${config.home.homeDirectory}/${userConfig.dotfilesDir}";
@@ -41,6 +41,9 @@ in
     
     # Secrets management
     sops
+    
+    # Flox package manager
+    flox.packages.${pkgs.system}.default
     
     # Terminal
     foot
@@ -114,9 +117,13 @@ in
   # Enables binary caching for quicker re-builds.
   nix.package = lib.mkIf (osConfig == null) pkgs.nix;
   nix.settings = {
-    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-substituters = [ 
+      "https://cache.numtide.com"
+      "https://cache.flox.dev"
+    ];
     extra-trusted-public-keys = [
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
     ];
   };
 

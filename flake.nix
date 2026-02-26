@@ -20,9 +20,10 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flox.url = "github:flox/flox/latest";
   };
 
-  outputs = { self, nixpkgs, home-manager, mango, llm-agents, sops-nix, noctalia-shell, ... }:
+  outputs = { self, nixpkgs, home-manager, mango, llm-agents, sops-nix, noctalia-shell, flox, ... }:
     let
       system = "x86_64-linux";
       
@@ -42,7 +43,7 @@
       };
       
       # Arguments passed to all modules
-      commonArgs = { inherit userConfig; };
+      commonArgs = { inherit userConfig flox; };
       
       # Shared Home Manager module imports
       commonHomeImports = [
