@@ -86,6 +86,11 @@ in
     enable = true;
     initExtra = ''
       PS1='\[\e[38;5;196m\]\u@\h\[\e[0m\]:\[\e[38;5;196m\]\w\[\e[0m\]\n\[\e[37m\]# \[\e[0m\]'
+      
+      # Source sops secrets automatically
+      if [ -f ${config.sops.secrets.my-secrets.path} ]; then
+        eval $(cat ${config.sops.secrets.my-secrets.path} 2>/dev/null)
+      fi
     '';
     shellAliases = {
       # NixOS rebuild
