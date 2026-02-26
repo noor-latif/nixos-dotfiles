@@ -45,8 +45,7 @@ in
     lolcat
     sox
     
-    # MangoWC ecosystem (Noctalia replaces: swaybg, swaync, swayosd, waybar, wlsunset)
-    # Keep: swayidle for idle management, wlr-randr for monitor control
+    # swayidle for idle management, wlr-randr for monitor control
     swayidle
     wlr-randr
     
@@ -87,10 +86,8 @@ in
     initExtra = ''
       PS1='\[\e[38;5;196m\]\u@\h\[\e[0m\]:\[\e[38;5;196m\]\w\[\e[0m\]\n\[\e[37m\]# \[\e[0m\]'
       
-      # Source sops secrets automatically
-      if [ -f ${config.sops.secrets.my-secrets.path} ]; then
-        eval $(cat ${config.sops.secrets.my-secrets.path} 2>/dev/null)
-      fi
+      # Source sops secrets
+      eval $(cat ${config.sops.secrets.my-secrets.path} 2>/dev/null)
     '';
     shellAliases = {
       # NixOS rebuild
@@ -101,9 +98,6 @@ in
 
       # Restart noctalia-shell (if needed)
       noctalia-restart = "pkill noctalia-shell; noctalia-shell &";
-
-      # Reload MangoWC config
-      mango-reload = "mango -r";
 
       # Launch GNOME from TTY (fallback)
       gnome = "XDG_SESSION_TYPE=wayland exec dbus-run-session gnome-session";

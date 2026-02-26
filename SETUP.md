@@ -114,9 +114,6 @@ apply-home --help
 If you want to use encrypted secrets:
 
 ```bash
-# Install age if not already available
-nix profile install nixpkgs#age
-
 # Generate an age key from your SSH key
 mkdir -p ~/.config/sops/age
 ssh-to-age -private-key -i ~/.ssh/id_ed25519 > ~/.config/sops/age/keys.txt
@@ -129,6 +126,7 @@ See [sops-nix documentation](https://github.com/Mic92/sops-nix) for more details
 
 ## Step 8: Start MangoWC
 
+The Mango desktop session should load immediately on reboot, but I will keep the manual launch instruction below just in case:
 From a TTY (not a graphical session):
 
 ```bash
@@ -290,12 +288,6 @@ sudo pacman -S mesa libva-mesa-driver
 # For NVIDIA (wayland support varies):
 sudo pacman -S nvidia nvidia-utils
 ```
-
-### Waybar not showing
-
-```bash
-# Check for errors
-waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css
 
 # Common issue: missing font
 # Install a Nerd Font or use the one from the config:

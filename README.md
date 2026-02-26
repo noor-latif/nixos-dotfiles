@@ -1,4 +1,4 @@
-# NixOS Dotfiles - Portable Configuration
+2# NixOS Dotfiles - Portable Configuration
 
 A fully portable Nix configuration that works on both **NixOS** and any Linux distribution with Nix (e.g., Arch Linux, Ubuntu, Fedora, etc.).
 
@@ -36,39 +36,6 @@ nix run home-manager/master -- switch --flake .#noor
 # After initial setup, use the alias
 apply-home
 ```
-
-## Architecture
-
-### File Structure
-
-```
-nixos-dotfiles/
-├── flake.nix              # Entry point - uses specialArgs for configurability
-├── configuration.nix      # NixOS system config (uses userConfig from specialArgs)
-├── home.nix              # Portable user config (receives userConfig via extraSpecialArgs)
-├── hardware-configuration.nix  # Auto-generated hardware config
-├── config/               # Dotfiles auto-symlinked to ~/.config/
-│   ├── mango/           # MangoWC compositor
-│   ├── waybar/          # Status bar
-│   ├── foot/            # Terminal
-│   ├── rofi/            # App launcher
-│   └── ...
-├── secrets/             # sops-nix encrypted secrets
-├── README.md            # This file
-└── SETUP.md            # Detailed setup instructions
-```
-
-### Configuration Split
-
-| NixOS Only (`configuration.nix`) | Portable (`home.nix`) |
-|----------------------------------|----------------------|
-| Bootloader, kernel settings | All user packages (100+) |
-| Networking, firewall | Desktop apps (Firefox, VS Code, Zed, Obsidian) |
-| Display manager (GDM) | MangoWC compositor + full ecosystem |
-| System services (PipeWire, CUPS) | Shell config, aliases, git |
-| User account creation | Fonts, theme, secrets |
-| XDG portals | All dotfiles in `config/` |
-| OBS virtual camera | Waybar, Rofi, Foot configs |
 
 ### specialArgs Pattern
 
@@ -123,33 +90,6 @@ All MangoWC configs are in `config/mango/`:
 
 These are **live symlinks** - edit them directly and changes apply immediately (or press `Super+Shift+r` to reload mango config).
 
-## Package Highlights
-
-### Development
-- `zed-editor`, `vscode` - Code editors
-- `git`, `gh` - Version control
-- `nodejs_25` - Node.js
-- `tmux` - Terminal multiplexer
-- `opencode`, `amp` - AI coding assistants
-
-### Desktop
-- `firefox`, `google-chrome` - Browsers
-- `obsidian` - Notes
-- `foot` - Terminal
-- `rofi` - App launcher
-- `waybar` - Status bar
-- `swaync` - Notifications
-
-### MangoWC Ecosystem
-- `mangowc` - Wayland compositor
-- `swaybg` - Wallpaper
-- `swaylock-effects` - Lock screen
-- `wlogout` - Logout menu
-- `wlsunset` - Night light
-- `grim` + `slurp` + `satty` - Screenshots
-- `wl-clipboard` + `cliphist` - Clipboard
-- `brightnessctl`, `pamixer` - Hardware controls
-
 ## Shell Aliases
 
 ```bash
@@ -192,8 +132,10 @@ home.packages = with pkgs; [
 
 ### Adding Dotfiles
 
+In repo, run:
 ```bash
 mkdir config/myapp
+# Then copy the dotfile dir in your home folder to repo
 cp ~/.config/myapp/config.conf config/myapp/
 ```
 
@@ -222,13 +164,6 @@ config.sops.secrets.MY_SECRET.path
 
 ## Troubleshooting
 
-### "Unfree package not allowed" on Arch
-
-Fixed! `home.nix` now includes:
-```nix
-nixpkgs.config.allowUnfree = true;
-```
-
 ### MangoWC not starting on Arch
 
 Ensure you're in the correct groups and have required system services:
@@ -238,29 +173,9 @@ sudo pacman -S polkit pipewire pipewire-pulse wireplumber seatd
 sudo systemctl enable --now polkit pipewire pipewire-pulse seatd
 ```
 
-### Waybar not showing
-
-```bash
-pkill waybar
-waybar-start  # Uses the alias
-```
-
 ## Documentation
 
 - **SETUP.md** - Detailed installation instructions for Arch Linux
 - **config/mango/README.md** - MangoWC-specific documentation
 - **Wiki**: https://mangowc.vercel.app/docs/
 
-## Theme: Tron: Ares
-
-Monochromatic red on black aesthetic inspired by the Dillinger Grid.
-
-- **Primary**: `#ff0000` (pure red)
-- **Background**: Near-black with red tint
-- **Terminal**: 80% alpha, red text, white cursor
-- **Sharp corners**: No border radius
-- **Thin borders**: 2px with red glow on focus
-
-## License
-
-MIT

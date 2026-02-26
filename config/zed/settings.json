@@ -1,0 +1,23 @@
+{
+  "language_models": {
+    "openai_compatible": {
+      "Kimi": {
+        "api_url": "https://api.moonshot.cn/v1",
+        "available_models": [
+          {
+            "name": "kimi-k2-5",
+            "display_name": "Kimi K2.5",
+            "max_tokens": 256000,
+            "max_output_tokens": 8192,
+            "capabilities": {
+              "tools": true,
+              "images": true,
+              "parallel_tool_calls": false,
+              "prompt_cache_key": false
+            }
+          }
+        ]
+      }
+    }
+  }
+}

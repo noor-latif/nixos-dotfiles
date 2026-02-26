@@ -16,6 +16,9 @@
         "ignoreMouseInput": false,
         "overviewLayer": false,
         "pinnedApps": [
+            "google-chrome",
+            "obsidian",
+            "com.obsproject.Studio"
         ],
         "position": "center",
         "screenshotAnnotationTool": "",
@@ -212,7 +215,7 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "Catppuccin",
+        "predefinedScheme": "Rose Pine",
         "schedulingMode": "off",
         "useWallpaperColors": false
     },
@@ -411,7 +414,7 @@
     "nightLight": {
         "autoSchedule": true,
         "dayTemp": "6500",
-        "enabled": false,
+        "enabled": true,
         "forced": false,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
