@@ -119,15 +119,19 @@ in
 
   services.lxqt-policykit-agent.enable = true;
 
+  # Simple whole-file mode - decrypt entire secrets.yaml
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets/secrets.yaml;
-    secrets.EXA_API_KEY = { };
+    secrets.my-secrets = {
+      key = "";  # Whole file mode - decrypt entire YAML
+    };
   };
 
   home.sessionVariables = {
-    EXA_API_KEY = "${config.sops.secrets.EXA_API_KEY.path}";
     EDITOR = "zed";
+    # Make secrets file path available
+    SECRETS_FILE = config.sops.secrets.my-secrets.path;
   };
 
   # Enable fonts installed via home.packages
