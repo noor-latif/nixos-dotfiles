@@ -45,6 +45,7 @@ in
     
     # Terminal
     foot
+    vim
     lolcat
     sox
     
@@ -131,7 +132,7 @@ in
   };
 
   home.sessionVariables = {
-    EDITOR = "zed";
+    EDITOR = "vi";
     # Make secrets file path available
     SECRETS_FILE = config.sops.secrets.my-secrets.path;
   };
