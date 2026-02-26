@@ -3,7 +3,7 @@ keys:
   - &system age1nf8a0ned5390gst6n4l57z6g5gp69e0dtyayehl4dghsqqkw8gusxzruuj # Your system's SSH host key
 
 creation_rules:
-  - path_regex: secrets/[^/]+\.yaml$
+  - path_regex: secrets/[^/]+\.(yaml|env)$
     key_groups:
       - age:
           - *admin

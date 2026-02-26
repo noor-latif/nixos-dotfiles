@@ -34,7 +34,6 @@ in
     bluetuith
     
     # Desktop
-    firefox
     google-chrome
     vscode
     zed-editor
@@ -112,6 +111,7 @@ in
   };
 
   # Nix settings (standalone Home Manager only - NixOS sets these automatically)
+  # Enables binary caching for quicker re-builds.
   nix.package = lib.mkIf (osConfig == null) pkgs.nix;
   nix.settings = {
     extra-substituters = [ "https://cache.numtide.com" ];
@@ -122,10 +122,10 @@ in
 
   services.lxqt-policykit-agent.enable = true;
 
-  # Simple whole-file mode - decrypt entire secrets.yaml
+  # Simple whole-file SOPS secrets mode - decrypt entire secrets.yaml
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFile = ./secrets/secrets.env;
     secrets.my-secrets = {
       key = "";  # Whole file mode - decrypt entire YAML
     };
