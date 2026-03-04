@@ -100,6 +100,17 @@
   services.gnome.gnome-keyring.enable = true;
   services.tailscale.enable = true;
 
+  # SSH server (for LAN access)
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+      KbdInteractiveAuthentication = false;
+    };
+  };
+
   # No system packages (all in home.nix)
   environment.systemPackages = with pkgs; [ ];
 
