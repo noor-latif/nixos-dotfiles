@@ -40,7 +40,7 @@ in
     vscode
     zed-editor
     obsidian
-    
+    gajim   
     # Secrets management
     sops
     
@@ -112,6 +112,12 @@ in
 
       # Switch to GDM to choose session
       gdm = "sudo systemctl restart display-manager";
+
+      # Zed editor (actual binary is zeditor)
+      zed = "zeditor";
+
+      # Exercism CLI shortcut
+      ex = "exercism";
     };
   };
 

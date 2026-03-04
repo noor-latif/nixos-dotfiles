@@ -1,4 +1,13 @@
 {
+  "agent": {
+    "default_model": {
+      "provider": "google",
+      "model": "gemini-3-flash-preview",
+      "enable_thinking": false
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
   "language_models": {
     "openai_compatible": {
       "Kimi": {
