@@ -1,8 +1,22 @@
 {
   description = "NixOS Dotfiles - Portable with Home Manager";
 
+  # Make flake builds prefer binary caches even before your system
+  # configuration is switched to a generation that includes them.
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.numtide.com"
+      "https://cache.flox.dev"
+    ];
+    extra-trusted-public-keys = [
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +37,7 @@
     flox.url = "github:flox/flox/latest";
   };
 
-  outputs = { self, nixpkgs, home-manager, mango, llm-agents, sops-nix, noctalia-shell, flox, ... }:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, mango, llm-agents, sops-nix, noctalia-shell, flox, ... }:
     let
       system = "x86_64-linux";
       
@@ -41,9 +55,16 @@
         config = { inherit allowUnfree; };
         overlays = [ llm-agents.overlays.default ];
       };
+
+      # Separate stable pkgs set for heavyweight apps where we
+      # want maximum chance of cache hits (avoid local builds).
+      pkgsStable = import nixpkgs-stable {
+        inherit system;
+        config = { allowUnfree = true; };
+      };
       
       # Arguments passed to all modules
-      commonArgs = { inherit userConfig flox; };
+      commonArgs = { inherit userConfig flox pkgsStable; };
       
       # Shared Home Manager module imports
       commonHomeImports = [

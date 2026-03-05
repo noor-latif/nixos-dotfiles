@@ -1,7 +1,7 @@
 # Home Manager configuration - portable across NixOS and any Linux distro
 # This file uses userConfig passed via extraSpecialArgs from flake.nix
 
-{ config, pkgs, lib, userConfig, flox, osConfig ? null, ... }:
+{ config, pkgs, lib, userConfig, flox, pkgsStable, osConfig ? null, ... }:
 
 let
   dotfilesPath = "${config.home.homeDirectory}/${userConfig.dotfilesDir}";
@@ -38,7 +38,8 @@ in
     # Desktop
     google-chrome
     vscode
-    zed-editor
+    # Use stable nixpkgs for better substitute coverage.
+    pkgsStable.zed-editor
     obsidian
     gajim   
     # Secrets management
@@ -52,7 +53,8 @@ in
     vim
     lolcat
     sox
-    
+    kitty
+
     # swayidle for idle management, wlr-randr for monitor control
     swayidle
     wlr-randr
@@ -99,7 +101,7 @@ in
     '';
     shellAliases = {
       # NixOS rebuild
-      apply = "sudo nixos-rebuild switch --flake ~/${userConfig.dotfilesDir}#nixos";
+      apply = "sudo nixos-rebuild switch --flake ~/${userConfig.dotfilesDir}#nixos --accept-flake-config";
 
       # Home Manager rebuild (works on any distro)
       apply-home = "home-manager switch --flake ~/${userConfig.dotfilesDir}#${userConfig.username}";
@@ -125,7 +127,7 @@ in
   # Enables binary caching for quicker re-builds.
   nix.package = lib.mkIf (osConfig == null) pkgs.nix;
   nix.settings = {
-    extra-substituters = [ 
+    extra-substituters = [
       "https://cache.numtide.com"
       "https://cache.flox.dev"
     ];
@@ -186,4 +188,7 @@ in
   wayland.windowManager.mango.enable = true;
 
   programs.noctalia-shell.enable = true;
+
+  # Prefer nixpkgs' prebuilt package over the flake input build.
+  programs.noctalia-shell.package = pkgs.noctalia-shell;
 }

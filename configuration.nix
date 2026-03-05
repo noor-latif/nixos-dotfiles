@@ -129,6 +129,16 @@
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     trusted-users = [ "@wheel" userConfig.username ];
+
+    # Binary caches to avoid local source builds for flake/overlay packages.
+    extra-substituters = [
+      "https://cache.numtide.com"
+      "https://cache.flox.dev"
+    ];
+    extra-trusted-public-keys = [
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+    ];
   };
 
   # OBS Studio
