@@ -53,6 +53,11 @@ in
     lolcat
     sox
     kitty
+    zsh
+    eza
+    starship
+    zoxide
+    fzf
 
     # swayidle for idle management, wlr-randr for monitor control
     swayidle
@@ -122,6 +127,73 @@ in
     };
   };
 
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    initContent = ''
+      # Source sops secrets
+      eval $(cat ${config.sops.secrets.my-secrets.path} 2>/dev/null)
+    '';
+    shellAliases = {
+      # exa-style listings (eza is the maintained fork)
+      ls = "eza --icons --group-directories-first";
+      l = "eza -la --git --icons --group-directories-first";
+      lt = "eza --tree --level=3 --icons --group-directories-first";
+      ltd = "eza --tree --level=5 --all --git-ignore --icons --group-directories-first";
+    };
+  };
+
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = false;
+    settings = {
+      add_newline = true;
+      format = "$username@$hostname:$directory$git_branch$git_status\n$character";
+
+      username = {
+        show_always = true;
+        style_user = "bold red";
+        style_root = "bold red";
+        format = "[$user]($style)";
+      };
+
+      hostname = {
+        ssh_only = false;
+        style = "bold red";
+        format = "[$hostname]($style)";
+      };
+
+      directory = {
+        style = "bold red";
+        truncation_length = 3;
+        truncation_symbol = "../";
+      };
+
+      git_branch = {
+        style = "bold red";
+        format = " [$branch]($style)";
+      };
+
+      git_status = {
+        style = "bold red";
+        format = "[$all_status$ahead_behind]($style)";
+      };
+
+      character = {
+        success_symbol = "[#](white)";
+        error_symbol = "[#](white)";
+      };
+    };
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   # Nix settings (standalone Home Manager only - NixOS sets these automatically)
   # Enables binary caching for quicker re-builds.
   nix.package = lib.mkIf (osConfig == null) pkgs.nix;
@@ -176,6 +248,7 @@ in
 
   home.sessionVariables = {
     EDITOR = "vi";
+    TERMINAL = "kitty";
     # Make secrets file path available
     SECRETS_FILE = config.sops.secrets.my-secrets.path;
   };
