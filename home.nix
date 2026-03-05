@@ -230,7 +230,7 @@ in
       # Fail fast if required vars aren't set.
       ExecStartPre = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg "test -n \"$GATEWAY_URL\" && test -n \"$OPENCLAW_GATEWAY_TOKEN\""}";
 
-      ExecStart = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg "${pkgs.nodejs_25}/bin/npx -y @openclaw/cli node --gateway-url \"$GATEWAY_URL\""}";
+      ExecStart = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg "${pkgs.nodejs_25}/bin/npx -y openclaw node --gateway-url \"$GATEWAY_URL\""}";
 
       Restart = "always";
       RestartSec = "5s";
