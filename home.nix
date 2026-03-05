@@ -137,6 +137,33 @@ in
 
   services.lxqt-policykit-agent.enable = true;
 
+  systemd.user.services.openclaw-node = {
+    Unit = {
+      Description = "OpenClaw Node Host (Browser Relay)";
+      After = [ "network.target" ];
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+
+    Service = {
+      Type = "simple";
+
+      # NOTE: Putting tokens directly in Nix makes them world-readable in the Nix store.
+      # Prefer adding `OPENCLAW_GATEWAY_TOKEN=...` to `secrets/secrets.env` (sops).
+      EnvironmentFile = config.sops.secrets.my-secrets.path;
+
+      # Fail fast if required vars aren't set.
+      ExecStartPre = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg "test -n \"$GATEWAY_URL\" && test -n \"$OPENCLAW_GATEWAY_TOKEN\""}";
+
+      ExecStart = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg "${pkgs.nodejs_25}/bin/npx -y @openclaw/cli node --gateway-url \"$GATEWAY_URL\""}";
+
+      Restart = "always";
+      RestartSec = "5s";
+    };
+  };
+
   # Simple whole-file SOPS secrets mode - decrypt entire secrets file
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
