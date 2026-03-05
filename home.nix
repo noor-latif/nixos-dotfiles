@@ -223,6 +223,14 @@ in
     Service = {
       Type = "simple";
 
+      # Chrome (remote gateway) usage:
+      # - This service runs the local Node Host on this machine, but connects to a remote OpenClaw Gateway at `GATEWAY_URL`.
+      # - Install/load the Chrome extension on this machine:
+      #     `openclaw browser extension install`
+      #     Chrome -> chrome://extensions -> Developer mode -> Load unpacked -> ~/.openclaw/browser/chrome-extension
+      # - In the extension options, set the Browser Relay URL to the relay port (Gateway port + 3).
+      #   Example: if `GATEWAY_URL` is https://gw.example.com:18790 then the relay is http://127.0.0.1:18793
+
       # NOTE: Putting tokens directly in Nix makes them world-readable in the Nix store.
       # Prefer adding `OPENCLAW_GATEWAY_TOKEN=...` to `secrets/secrets.env` (sops).
       EnvironmentFile = config.sops.secrets.my-secrets.path;
@@ -236,8 +244,12 @@ in
         export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
         export PATH="$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH"
 
+        mkdir -p "$NPM_CONFIG_PREFIX"
+
         if ! command -v openclaw >/dev/null 2>&1; then
-          npm install -g openclaw@latest
+          # Avoid NixOS build tooling issues for relay-only setups.
+          export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1
+          npm install -g openclaw@latest --prefix "$NPM_CONFIG_PREFIX" --legacy-peer-deps --omit=optional
         fi
       ''}";
 
@@ -250,8 +262,8 @@ in
         export PATH="$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH"
 
         host="$(${pkgs.nodejs_25}/bin/node -p 'new URL(process.env.GATEWAY_URL).hostname')"
-        port="$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); console.log(u.port || (u.protocol==="https:" ? 443 : 80))')"
-        tls="$(${pkgs.nodejs_25}/bin/node -p 'new URL(process.env.GATEWAY_URL).protocol==="https:" ? "--tls" : ""')"
+        port="$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); const tls=(u.protocol==="https:"||u.protocol==="wss:"); console.log(u.port || (tls ? 443 : 80))')"
+        tls="$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); (u.protocol==="https:"||u.protocol==="wss:") ? "--tls" : ""')"
 
         exec openclaw node run --host "$host" --port "$port" $tls
       ''}";
