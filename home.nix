@@ -49,7 +49,6 @@ in
     flox.packages.${pkgs.stdenv.hostPlatform.system}.default
     
     # Terminal
-    foot
     vim
     lolcat
     sox

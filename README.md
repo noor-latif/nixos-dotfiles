@@ -64,7 +64,7 @@ This setup includes [MangoWC](https://github.com/DreamMaoMao/mangowc), a lightwe
 
 ### Key Bindings
 
-- **Super+Shift+Return**: Open terminal (foot)
+- **Super+Shift+Return**: Open terminal (kitty)
 - **Super+d**: Open launcher (rofi)
 - **Super+1-9**: Switch workspace (tag)
 - **Super+Shift+1-9**: Move window to workspace
@@ -178,4 +178,3 @@ sudo systemctl enable --now polkit pipewire pipewire-pulse seatd
 - **SETUP.md** - Detailed installation instructions for Arch Linux
 - **config/mango/README.md** - MangoWC-specific documentation
 - **Wiki**: https://mangowc.vercel.app/docs/
-
