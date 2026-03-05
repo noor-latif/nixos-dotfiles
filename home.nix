@@ -228,9 +228,33 @@ in
       EnvironmentFile = config.sops.secrets.my-secrets.path;
 
       # Fail fast if required vars aren't set.
-      ExecStartPre = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg "test -n \"$GATEWAY_URL\" && test -n \"$OPENCLAW_GATEWAY_TOKEN\""}";
+      # Also ensure the OpenClaw CLI is installed once (avoid `npx` re-install/unpack on every run).
+      ExecStartPre = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg ''
+        set -euo pipefail
+        test -n "$GATEWAY_URL" && test -n "$OPENCLAW_GATEWAY_TOKEN"
 
-      ExecStart = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg "${pkgs.nodejs_25}/bin/npx -y openclaw node --gateway-url \"$GATEWAY_URL\""}";
+        export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
+        export PATH="$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH"
+
+        if ! command -v openclaw >/dev/null 2>&1; then
+          npm install -g openclaw@latest
+        fi
+      ''}";
+
+      # Connect a local node host (this machine) to the remote gateway.
+      # `GATEWAY_URL` is expected to be something like http(s)://host:port.
+      ExecStart = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg ''
+        set -euo pipefail
+
+        export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
+        export PATH="$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH"
+
+        host="$(${pkgs.nodejs_25}/bin/node -p 'new URL(process.env.GATEWAY_URL).hostname')"
+        port="$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); console.log(u.port || (u.protocol==="https:" ? 443 : 80))')"
+        tls="$(${pkgs.nodejs_25}/bin/node -p 'new URL(process.env.GATEWAY_URL).protocol==="https:" ? "--tls" : ""')"
+
+        exec openclaw node run --host "$host" --port "$port" $tls
+      ''}";
 
       Restart = "always";
       RestartSec = "5s";
