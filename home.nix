@@ -27,6 +27,7 @@ in
     nodejs_25
     go
     llm-agents.amp
+    llm-agents.kilocode-cli
     llm-agents.opencode
     gh
     git
