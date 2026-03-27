@@ -125,6 +125,10 @@ in
 
       # Exercism CLI shortcut
       ex = "exercism";
+
+      # RSPS launcher shortcuts
+      exiled = "nix-shell -p jre --run 'cd \"$HOME/Downloads\" && java -Xmx1g -jar \"Exiled RSPS.jar\"'";
+      exiled-2g = "nix-shell -p jre --run 'cd \"$HOME/Downloads\" && java -Xmx2g -jar \"Exiled RSPS.jar\"'";
     };
   };
 
@@ -143,6 +147,10 @@ in
       l = "eza -la --git --icons --group-directories-first";
       lt = "eza --tree --level=3 --icons --group-directories-first";
       ltd = "eza --tree --level=5 --all --git-ignore --icons --group-directories-first";
+
+      # RSPS launcher shortcuts
+      exiled = "nix-shell -p jre --run 'cd \"$HOME/Downloads\" && java -Xmx1g -jar \"Exiled RSPS.jar\"'";
+      exiled-2g = "nix-shell -p jre --run 'cd \"$HOME/Downloads\" && java -Xmx2g -jar \"Exiled RSPS.jar\"'";
     };
   };
 
@@ -229,45 +237,85 @@ in
       # - Install/load the Chrome extension on this machine:
       #     `openclaw browser extension install`
       #     Chrome -> chrome://extensions -> Developer mode -> Load unpacked -> ~/.openclaw/browser/chrome-extension
-      # - In the extension options, set the Browser Relay URL to the relay port (Gateway port + 3).
-      #   Example: if `GATEWAY_URL` is https://gw.example.com:18790 then the relay is http://127.0.0.1:18793
+      # - In the extension options, set the Browser Relay port to the *local relay* port.
+      #   Port math: extension relay port = local gateway port + 3.
+      #   Example: default gateway 18789 -> relay 18792; this config runs a local gateway on 18790 -> relay 18793.
+      #   (You may also see 18792 listening; that endpoint is auth-protected and is not the extension relay.)
 
       # NOTE: Putting tokens directly in Nix makes them world-readable in the Nix store.
       # Prefer adding `OPENCLAW_GATEWAY_TOKEN=...` to `secrets/secrets.env` (sops).
       EnvironmentFile = config.sops.secrets.my-secrets.path;
 
+      # Not a secret; keep it out of sops to make debugging easier.
+      # Use a TLS URL here so the node host never tries plaintext `ws://` to a private IP.
+      # (We intentionally *don't* use `GATEWAY_URL` directly because the secrets file may
+      # also define it; the service forces `GATEWAY_URL` from `OPENCLAW_GATEWAY_URL`.)
+      Environment = [
+        "OPENCLAW_GATEWAY_URL=wss://kubelab.rohu-mirach.ts.net:8443"
+      ];
+
       # Fail fast if required vars aren't set.
       # Also ensure the OpenClaw CLI is installed once (avoid `npx` re-install/unpack on every run).
-      ExecStartPre = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg ''
-        set -euo pipefail
-        test -n "$GATEWAY_URL" && test -n "$OPENCLAW_GATEWAY_TOKEN"
-
-        export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
-        export PATH="$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH"
-
-        mkdir -p "$NPM_CONFIG_PREFIX"
-
-        if ! command -v openclaw >/dev/null 2>&1; then
-          # Avoid NixOS build tooling issues for relay-only setups.
-          export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1
-          npm install -g openclaw@latest --prefix "$NPM_CONFIG_PREFIX" --legacy-peer-deps --omit=optional
-        fi
-      ''}";
+      # NOTE: systemd unit files cannot contain literal newlines in values.
+      # Keep the bash payload on a single line (and avoid inline '#' comments).
+      ExecStartPre =
+        let
+          cmd = "set -euo pipefail; export GATEWAY_URL=\"$OPENCLAW_GATEWAY_URL\"; test -n \"$GATEWAY_URL\" && test -n \"$OPENCLAW_GATEWAY_TOKEN\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; mkdir -p \"$NPM_CONFIG_PREFIX\"; if ! command -v openclaw >/dev/null 2>&1; then export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1; npm install -g openclaw@latest --prefix \"$NPM_CONFIG_PREFIX\" --legacy-peer-deps --omit=optional; fi";
+        in
+        "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
 
       # Connect a local node host (this machine) to the remote gateway.
       # `GATEWAY_URL` is expected to be something like http(s)://host:port.
-      ExecStart = "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg ''
-        set -euo pipefail
+      ExecStart =
+        let
+          cmd = "set -euo pipefail; export GATEWAY_URL=\"$OPENCLAW_GATEWAY_URL\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; host=\"$(${pkgs.nodejs_25}/bin/node -p 'new URL(process.env.GATEWAY_URL).hostname')\"; port=\"$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); const tls=(u.protocol===\"https:\"||u.protocol===\"wss:\"); console.log(u.port || (tls ? 443 : 80))')\"; tls=\"$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); (u.protocol===\"https:\"||u.protocol===\"wss:\") ? \"--tls\" : \"\"')\"; exec openclaw node run --host \"$host\" --port \"$port\" $tls";
+        in
+        "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
 
-        export NPM_CONFIG_PREFIX="$HOME/.local/share/npm"
-        export PATH="$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH"
+      Restart = "always";
+      RestartSec = "5s";
+    };
+  };
 
-        host="$(${pkgs.nodejs_25}/bin/node -p 'new URL(process.env.GATEWAY_URL).hostname')"
-        port="$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); const tls=(u.protocol==="https:"||u.protocol==="wss:"); console.log(u.port || (tls ? 443 : 80))')"
-        tls="$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); (u.protocol==="https:"||u.protocol==="wss:") ? "--tls" : ""')"
+  systemd.user.services.openclaw-relay = {
+    Unit = {
+      Description = "OpenClaw Local Gateway (Chrome Extension Relay)";
+      After = [ "network.target" ];
+    };
 
-        exec openclaw node run --host "$host" --port "$port" $tls
-      ''}";
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+
+    Service = {
+      Type = "simple";
+
+      # This runs a *local* OpenClaw Gateway instance purely so the Chrome
+      # extension relay server is available on this machine at 127.0.0.1.
+      # The relay then connects outward to the *remote* gateway URL configured
+      # in the extension options.
+      #
+      # Port mapping (derived internally by OpenClaw):
+      # - gateway port: 18790 (local)
+      # - extension relay port: gateway + 3 => 18793 (local)
+      #
+      # The relay requires the same gateway token as the remote gateway; keep it
+      # in sops secrets as OPENCLAW_GATEWAY_TOKEN.
+      EnvironmentFile = config.sops.secrets.my-secrets.path;
+
+      # Fail fast if required vars aren't set, and install the CLI once (no npx).
+      ExecStartPre =
+        let
+          cmd = "set -euo pipefail; test -n \"$OPENCLAW_GATEWAY_TOKEN\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; mkdir -p \"$NPM_CONFIG_PREFIX\"; if ! command -v openclaw >/dev/null 2>&1; then export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1; npm install -g openclaw@latest --prefix \"$NPM_CONFIG_PREFIX\" --legacy-peer-deps --omit=optional; fi";
+        in
+        "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
+
+      # Use an isolated profile so this doesn't write into ~/.openclaw.
+      ExecStart =
+        let
+          cmd = "set -euo pipefail; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; exec openclaw --profile relay gateway run --bind loopback --port 18790 --auth token --token \"$OPENCLAW_GATEWAY_TOKEN\" --allow-unconfigured";
+        in
+        "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
 
       Restart = "always";
       RestartSec = "5s";
