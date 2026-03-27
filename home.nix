@@ -35,6 +35,7 @@ in
     tmux
     bluetuith
     exercism
+    file
     
     # Desktop
     google-chrome
