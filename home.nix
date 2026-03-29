@@ -40,6 +40,8 @@ in
     # Desktop
     google-chrome
     vscode
+    wpsoffice
+
     # Use stable nixpkgs for better substitute coverage.
     pkgsStable.zed-editor
     obsidian
