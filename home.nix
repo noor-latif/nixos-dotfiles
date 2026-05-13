@@ -29,6 +29,7 @@ in
     llm-agents.amp
     llm-agents.kilocode-cli
     llm-agents.opencode
+    lmstudio
     gh
     git
     opencommit
@@ -62,6 +63,7 @@ in
     starship
     zoxide
     fzf
+    foot
 
     # swayidle for idle management, wlr-randr for monitor control
     swayidle
