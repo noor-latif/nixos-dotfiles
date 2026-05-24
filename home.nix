@@ -106,8 +106,10 @@ in
     initExtra = ''
       PS1='\[\e[38;5;196m\]\u@\h\[\e[0m\]:\[\e[38;5;196m\]\w\[\e[0m\]\n\[\e[37m\]# \[\e[0m\]'
       
-      # Source sops secrets
-      eval $(cat ${config.sops.secrets.my-secrets.path} 2>/dev/null)
+      # Source and export sops secrets for child processes like Codex MCP servers.
+      set -a
+      source ${config.sops.secrets.my-secrets.path} 2>/dev/null || true
+      set +a
     '';
     shellAliases = {
       # NixOS rebuild
@@ -143,8 +145,10 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     initContent = ''
-      # Source sops secrets
-      eval $(cat ${config.sops.secrets.my-secrets.path} 2>/dev/null)
+      # Source and export sops secrets for child processes like Codex MCP servers.
+      set -a
+      source ${config.sops.secrets.my-secrets.path} 2>/dev/null || true
+      set +a
     '';
     shellAliases = {
       # exa-style listings (eza is the maintained fork)
