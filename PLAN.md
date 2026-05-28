@@ -243,7 +243,7 @@ imagemagick
 
   home.packages = with pkgs; [
     # Development (keep all)
-    nodejs_25
+    nodejs_24
     llm-agents.amp
     llm-agents.opencode
     gh

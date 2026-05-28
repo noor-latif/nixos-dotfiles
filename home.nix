@@ -14,6 +14,8 @@ let
     source = softlink "${dotfilesPath}/config/${name}";
     recursive = true;
   }) (lib.filterAttrs (_: type: type == "directory") configDirs);
+
+  nodejs = pkgs.nodejs_24;
 in
 {
   home.username = userConfig.username;
@@ -24,7 +26,7 @@ in
   # User packages - organized by category
   home.packages = with pkgs; [
     # Development
-    nodejs_25
+    nodejs
     go
     llm-agents.amp
     llm-agents.kilocode-cli
@@ -270,7 +272,7 @@ in
       # Keep the bash payload on a single line (and avoid inline '#' comments).
       ExecStartPre =
         let
-          cmd = "set -euo pipefail; export GATEWAY_URL=\"$OPENCLAW_GATEWAY_URL\"; test -n \"$GATEWAY_URL\" && test -n \"$OPENCLAW_GATEWAY_TOKEN\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; mkdir -p \"$NPM_CONFIG_PREFIX\"; if ! command -v openclaw >/dev/null 2>&1; then export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1; npm install -g openclaw@latest --prefix \"$NPM_CONFIG_PREFIX\" --legacy-peer-deps --omit=optional; fi";
+          cmd = "set -euo pipefail; export GATEWAY_URL=\"$OPENCLAW_GATEWAY_URL\"; test -n \"$GATEWAY_URL\" && test -n \"$OPENCLAW_GATEWAY_TOKEN\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${nodejs}/bin:$PATH\"; mkdir -p \"$NPM_CONFIG_PREFIX\"; if ! command -v openclaw >/dev/null 2>&1; then export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1; npm install -g openclaw@latest --prefix \"$NPM_CONFIG_PREFIX\" --legacy-peer-deps --omit=optional; fi";
         in
         "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
 
@@ -278,7 +280,7 @@ in
       # `GATEWAY_URL` is expected to be something like http(s)://host:port.
       ExecStart =
         let
-          cmd = "set -euo pipefail; export GATEWAY_URL=\"$OPENCLAW_GATEWAY_URL\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; host=\"$(${pkgs.nodejs_25}/bin/node -p 'new URL(process.env.GATEWAY_URL).hostname')\"; port=\"$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); const tls=(u.protocol===\"https:\"||u.protocol===\"wss:\"); console.log(u.port || (tls ? 443 : 80))')\"; tls=\"$(${pkgs.nodejs_25}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); (u.protocol===\"https:\"||u.protocol===\"wss:\") ? \"--tls\" : \"\"')\"; exec openclaw node run --host \"$host\" --port \"$port\" $tls";
+          cmd = "set -euo pipefail; export GATEWAY_URL=\"$OPENCLAW_GATEWAY_URL\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${nodejs}/bin:$PATH\"; host=\"$(${nodejs}/bin/node -p 'new URL(process.env.GATEWAY_URL).hostname')\"; port=\"$(${nodejs}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); const tls=(u.protocol===\"https:\"||u.protocol===\"wss:\"); console.log(u.port || (tls ? 443 : 80))')\"; tls=\"$(${nodejs}/bin/node -p 'const u=new URL(process.env.GATEWAY_URL); (u.protocol===\"https:\"||u.protocol===\"wss:\") ? \"--tls\" : \"\"')\"; exec openclaw node run --host \"$host\" --port \"$port\" $tls";
         in
         "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
 
@@ -316,14 +318,14 @@ in
       # Fail fast if required vars aren't set, and install the CLI once (no npx).
       ExecStartPre =
         let
-          cmd = "set -euo pipefail; test -n \"$OPENCLAW_GATEWAY_TOKEN\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; mkdir -p \"$NPM_CONFIG_PREFIX\"; if ! command -v openclaw >/dev/null 2>&1; then export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1; npm install -g openclaw@latest --prefix \"$NPM_CONFIG_PREFIX\" --legacy-peer-deps --omit=optional; fi";
+          cmd = "set -euo pipefail; test -n \"$OPENCLAW_GATEWAY_TOKEN\"; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${nodejs}/bin:$PATH\"; mkdir -p \"$NPM_CONFIG_PREFIX\"; if ! command -v openclaw >/dev/null 2>&1; then export NODE_LLAMA_CPP_SKIP_DOWNLOAD=1; npm install -g openclaw@latest --prefix \"$NPM_CONFIG_PREFIX\" --legacy-peer-deps --omit=optional; fi";
         in
         "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
 
       # Use an isolated profile so this doesn't write into ~/.openclaw.
       ExecStart =
         let
-          cmd = "set -euo pipefail; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${pkgs.nodejs_25}/bin:$PATH\"; exec openclaw --profile relay gateway run --bind loopback --port 18790 --auth token --token \"$OPENCLAW_GATEWAY_TOKEN\" --allow-unconfigured";
+          cmd = "set -euo pipefail; export NPM_CONFIG_PREFIX=\"$HOME/.local/share/npm\"; export PATH=\"$NPM_CONFIG_PREFIX/bin:${nodejs}/bin:$PATH\"; exec openclaw --profile relay gateway run --bind loopback --port 18790 --auth token --token \"$OPENCLAW_GATEWAY_TOKEN\" --allow-unconfigured";
         in
         "${pkgs.bash}/bin/bash -lc ${lib.escapeShellArg cmd}";
 
