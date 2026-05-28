@@ -88,11 +88,14 @@
     pulse.enable = true;
   };
 
+  # Docker engine
+  virtualisation.docker.enable = true;
+
   # User account
   users.users.${userConfig.username} = {
     isNormalUser = true;
     description = userConfig.name;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = [ ];  # Packages are in home.nix
   };
 

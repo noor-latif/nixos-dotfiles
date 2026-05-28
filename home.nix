@@ -37,6 +37,7 @@ in
     bluetuith
     exercism
     file
+    docker
     
     # Desktop
     google-chrome
