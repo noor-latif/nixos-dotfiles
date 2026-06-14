@@ -2,3 +2,9 @@
 mode = "dark"
 source = "custom"
 custom_palette = "Tron-Ares"
+
+[shell]
+corner_radius_scale = 0
+
+[bar.main]
+capsule = true
