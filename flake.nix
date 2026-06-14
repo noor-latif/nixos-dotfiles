@@ -53,7 +53,7 @@
       mkPkgs = { allowUnfree ? true }: import nixpkgs {
         inherit system;
         config = { inherit allowUnfree; };
-        overlays = [ llm-agents.overlays.default ];
+        overlays = [ llm-agents.overlays.default noctalia-shell.overlays.default ];
       };
 
       # Separate stable pkgs set for heavyweight apps where we
@@ -82,8 +82,8 @@
         inherit system;
         specialArgs = commonArgs;
         modules = [
-          # Apply overlays for llm-agents packages
-          { nixpkgs.overlays = [ llm-agents.overlays.default ]; }
+          # Apply overlays for llm-agents and noctalia packages
+          { nixpkgs.overlays = [ llm-agents.overlays.default noctalia-shell.overlays.default ]; }
           ./configuration.nix
           sops-nix.nixosModules.sops
           mango.nixosModules.mango

@@ -142,8 +142,8 @@ in
       # Home Manager rebuild (works on any distro)
       apply-home = "home-manager switch --flake ~/${userConfig.dotfilesDir}#${userConfig.username}";
 
-      # Restart noctalia-shell (if needed)
-      noctalia-restart = "pkill noctalia-shell; noctalia-shell &";
+      # Restart noctalia (if needed)
+      noctalia-restart = "pkill noctalia; noctalia &";
 
       # Launch GNOME from TTY (fallback)
       gnome = "XDG_SESSION_TYPE=wayland exec dbus-run-session gnome-session";
@@ -282,5 +282,5 @@ in
   programs.noctalia.enable = true;
 
   # Prefer nixpkgs' prebuilt package over the flake input build.
-  programs.noctalia.package = pkgs.noctalia-shell;
+  programs.noctalia.package = pkgs.noctalia;
 }
