@@ -55,6 +55,7 @@ in
     # Desktop
     google-chrome
     vscode
+    antigravity
     wpsoffice
 
     # Use stable nixpkgs for better substitute coverage.
