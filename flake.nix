@@ -75,6 +75,8 @@
       ];
     in
     {
+      formatter.${system} = (mkPkgs { }).nixpkgs-fmt;
+
       # NixOS configuration (with integrated HM)
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
