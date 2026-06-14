@@ -8,13 +8,13 @@ corner_radius_scale = 0
 
 [bar.main]
 position           = "top"
-thickness          = 28
+thickness          = 24
 background_opacity = 1.0
 radius             = 0
 margin_h           = 0
 margin_v           = 0
-padding            = 8
-widget_spacing     = 4
+padding            = 2
+widget_spacing     = 2
 scale              = 1.0
 shadow             = false
 auto_hide          = false
