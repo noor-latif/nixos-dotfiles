@@ -41,17 +41,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = ''
-          ${pkgs.tuigreet}/bin/tuigreet \
-            --time \
-            --remember \
-            --remember-session \
-            --asterisks \
-            --window-padding 2 \
-            --container-padding 2 \
-            --prompt-padding 1 \
-            --theme 'border=red;container=black;text=red;greet=red;prompt=red;input=red;action=red;button=red'
-        '';
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --asterisks --window-padding 2 --container-padding 2 --prompt-padding 1 --theme 'border=red;container=black;text=red;greet=red;prompt=red;input=red;action=red;button=red'";
         user = "greeter";
       };
     };

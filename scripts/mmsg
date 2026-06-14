@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -eu
+
+# Wrapper for mmsg that translates old-style commands to Mango 0.14+ syntax.
+# Noctalia's MangoService.spawn() uses:
+#   mmsg -s -d spawn_shell,<command>
+# which was removed in Mango 0.13+. The correct syntax is:
+#   mmsg dispatch spawn,<command>
+
+real_mmsg="/etc/profiles/per-user/noor/bin/mmsg"
+
+if [ "$1" = "-s" ] && [ "$2" = "-d" ]; then
+    case "$3" in
+        spawn_shell,*)
+            cmd="${3#spawn_shell,}"
+            exec "$real_mmsg" dispatch spawn,"$cmd"
+            ;;
+        *)
+            # Strip -s -d flags (removed in 0.14+) and pass through
+            shift 2
+            exec "$real_mmsg" "$@"
+            ;;
+    esac
+fi
+
+exec "$real_mmsg" "$@"

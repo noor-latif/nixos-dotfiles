@@ -116,9 +116,18 @@ in
 
   xdg.configFile = configLinks;
 
+  # Mmsg wrapper for Noctalia compat (see scripts/mmsg)
+  home.file.".local/bin/mmsg" = {
+    source = ./scripts/mmsg;
+    executable = true;
+  };
+
   programs.bash = {
     enable = true;
     initExtra = ''
+      # Prepend ~/.local/bin for mmsg wrapper override
+      export PATH="$HOME/.local/bin:$PATH"
+
       PS1='\[\e[38;5;196m\]\u@\h\[\e[0m\]:\[\e[38;5;196m\]\w\[\e[0m\]\n\[\e[37m\]# \[\e[0m\]'
       
       # Source and export sops secrets for child processes like Codex MCP servers.
@@ -160,6 +169,9 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     initContent = ''
+      # Prepend ~/.local/bin for mmsg wrapper override
+      export PATH="$HOME/.local/bin:$PATH"
+
       # Source and export sops secrets for child processes like Codex MCP servers.
       set -a
       source ${config.sops.secrets.my-secrets.path} 2>/dev/null || true
@@ -267,8 +279,8 @@ in
   # MangoWC compositor configuration
   wayland.windowManager.mango.enable = true;
 
-  programs.noctalia-shell.enable = true;
+  programs.noctalia.enable = true;
 
   # Prefer nixpkgs' prebuilt package over the flake input build.
-  programs.noctalia-shell.package = pkgs.noctalia-shell;
+  programs.noctalia.package = pkgs.noctalia-shell;
 }
