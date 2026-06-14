@@ -7,4 +7,20 @@ custom_palette = "Tron-Ares"
 corner_radius_scale = 0
 
 [bar.main]
-capsule = true
+position           = "top"
+thickness          = 28
+background_opacity = 1.0
+radius             = 0
+margin_h           = 0
+margin_v           = 0
+padding            = 8
+widget_spacing     = 4
+scale              = 1.0
+shadow             = false
+auto_hide          = false
+reserve_space      = true
+capsule            = false
+
+start  = ["workspaces"]
+center = []
+end    = ["clock", "volume", "network", "tray"]
