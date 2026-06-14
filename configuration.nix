@@ -17,8 +17,9 @@
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
-  # DNS resolution via systemd-resolved
+  # DNS resolution via systemd-resolved (avahi must be off to avoid mDNS conflict)
   services.resolved.enable = true;
+  services.avahi.enable = false;
   time.timeZone = "Europe/Stockholm";
 
   # Locale
@@ -126,6 +127,12 @@
 
   # Swaylock PAM
   security.pam.services.swaylock = {};
+
+  # Greetd PAM - enable gnome-keyring so it unlocks the login keyring on
+  # TTY authentication (needed by Chrome, VS Code, etc.). The harmless
+  # "gkr-pam: unable to locate daemon control file" warning is expected
+  # before the daemon starts and can be safely ignored.
+  security.pam.services.greetd.enableGnomeKeyring = true;
 
   # Nix settings
   nixpkgs.config.allowUnfree = true;
