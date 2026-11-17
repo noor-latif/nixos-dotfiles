@@ -1,0 +1,4 @@
+nixos-dotfiles
+Copyright (c) 2026 Noor Latif. Licensed under the MIT License (see LICENSE).
+
+- config/rofi/gruvbox-dark-hard.rasi, and its copy in archive/rofi/, is based on the Gruvbox color scheme for Vim by morhetz (https://github.com/morhetz/gruvbox), as the file header says. Gruvbox keeps its own licence.
